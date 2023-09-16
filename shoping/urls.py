@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
 admin.site.site_title = '占い師管理サイト' 
 admin.site.site_header = '占い師管理サイト' 
@@ -27,6 +28,9 @@ urlpatterns = [
     path("frontend/",include('frontend.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('accounts/login/', TemplateView.as_view(template_name = 'login.html'), name='login'),
+    path('accounts/logout/', TemplateView.as_view(template_name = 'logout.html'), name='logout'),
+    path('accounts/signup/', TemplateView.as_view(template_name = 'signup.html'), name='signup'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

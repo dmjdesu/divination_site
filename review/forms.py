@@ -7,4 +7,4 @@ from django import forms
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ["username", "email", "password1", "password2",'category']
+        fields = ["username", "email", "password1", "password2"]

@@ -6,4 +6,5 @@ from review.models import *
 admin.site.register(CustomUser)
 admin.site.register(UserDetailSupplier)
 admin.site.register(UserDetailBuyer)
+admin.site.register(Category)
 

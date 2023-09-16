@@ -152,7 +152,7 @@ WEBPACK_LOADER = {
     }
 }
 
-ALLOWED_HOSTS = ['os3-281-30171.vs.sakura.ne.jp', 'www.os3-281-30171.vs.sakura.ne.jp']
+ALLOWED_HOSTS = ['os3-281-30171.vs.sakura.ne.jp', 'www.os3-281-30171.vs.sakura.ne.jp','127.0.0.1']
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'), 
@@ -197,3 +197,13 @@ SITE_ID = 1
 
 # signupformからの情報をcustomusermodelに保存するためのアダプタを指定
 ACCOUNT_ADAPTER = 'review.adapter.AccountAdapter'
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_USERNAME_REQUIRED = True
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'

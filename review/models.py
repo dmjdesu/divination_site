@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import UserManager
 
 class Category(models.Model):
-    name = models.CharField('サイト名', max_length=255)
+    name = models.CharField('ユーザーカテゴリー', max_length=255)
 
     def __str__(self):
         return self.name
@@ -17,8 +17,8 @@ class UserType(models.Model):
     def __str__(self):
         return f'{self.id} - {self.typename}'
 
-USERTYPE_SUPPLIER = 100
-USERTYPE_BUYER = 200
+USERTYPE_SUPPLIER = 1
+USERTYPE_BUYER = 2
 USERTYPE_DEFAULT = USERTYPE_BUYER
 
 class CustomUserManager(UserManager):
@@ -48,7 +48,6 @@ class CustomUserManager(UserManager):
         return self._create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
     #作成したマネージャークラスを使用
     objects = CustomUserManager()
@@ -70,11 +69,8 @@ class UserDetailSupplier(models.Model):
                                 related_name='detail_supplier',
                                 on_delete=models.CASCADE)
     # サプライヤーユーザ向けの項目
-    companyName = models.CharField(
-                                   max_length=100,
-                                   null=True,
-                                   blank=True,
-                                )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    
     def __str__(self):
         user = CustomUser.objects.get(pk=self.user_id)
         return f'{user.id} - {user.username} - {user.email} - {self.id} - {self.companyName}'
