@@ -152,6 +152,8 @@ WEBPACK_LOADER = {
     }
 }
 
+ALLOWED_HOSTS = ['os3-281-30171.vs.sakura.ne.jp', 'www.os3-281-30171.vs.sakura.ne.jp']
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'), 
     os.path.join(BASE_DIR, 'static'),
