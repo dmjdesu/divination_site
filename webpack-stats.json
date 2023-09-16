@@ -1,0 +1,14 @@
+{
+  "status": "done",
+  "assets": {
+    "main-dc09bc50579ae1eb5d9f.js": {
+      "name": "main-dc09bc50579ae1eb5d9f.js",
+      "path": "/Users/koudaseiryuu/shoping/static/bundles/main-dc09bc50579ae1eb5d9f.js"
+    }
+  },
+  "chunks": {
+    "main": [
+      "main-dc09bc50579ae1eb5d9f.js"
+    ]
+  }
+}
