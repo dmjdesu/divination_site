@@ -26,7 +26,7 @@ SECRET_KEY = 'h43&^c57q6+412$crxl3)i68ef=l!#fs=8vha+7di&t4i$u8w9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["ik1-342-31112.vs.sakura.ne.jp","www.ik1-342-31112.vs.sakura.ne.jp"]
 
 
 # Application definition
