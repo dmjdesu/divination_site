@@ -26,7 +26,7 @@ SECRET_KEY = 'h43&^c57q6+412$crxl3)i68ef=l!#fs=8vha+7di&t4i$u8w9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ik1-342-31112.vs.sakura.ne.jp","ik1-342-31112.vs.sakura.ne.jp"]
+ALLOWED_HOSTS = ["ik1-342-31112.vs.sakura.ne.jp","ik1-342-31112.vs.sakura.ne.jp","127.0.0.1"]
 
 
 # Application definition
@@ -133,7 +133,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if DEBUG:
+    MEDIA_ROOT = BASE_DIR / 'media'
+else:
+    MEDIA_ROOT = f'/var/www/{BASE_DIR.name}/media'
+
+AUTH_USER_MODEL = 'snsapp.User'
 
 ###### ↓認証系の設定 #####
 AUTHENTICATION_BACKENDS = (

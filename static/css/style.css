@@ -24,7 +24,3 @@ input#id_remember {
   display: block;
   margin-left: 30px;
 }
-
-.container-maxwidth {
-  margin-top: 70px; /* navbarの高さに応じて調整 */
-}

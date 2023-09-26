@@ -1,17 +1,24 @@
-{% extends "account/base.html" %}
- 
-{% load i18n %}
- 
-{% block content %}
- 
+{% extends "account/base.html" %} {% load i18n %} {% block content %}
+
 <p>{% trans 'Are you sure you want to sign out?' %}</p>
- 
+
 <form class="form-signin" method="POST" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% csrf_token %} {% if redirect_field_value %}
+  <input
+    type="hidden"
+    name="{{ redirect_field_name }}"
+    value="{{ redirect_field_value }}"
+  />
   {% endif %}
-  <button type="submit" class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Sign Out' %}</button>
+  <button type="submit" class="btn btn-lg btn-primary btn-block" type="submit">
+    {% trans 'Sign Out' %}
+  </button>
 </form>
- 
+
+<style>
+  .container-maxwidth {
+    margin-top: 70px; /* navbarの高さに応じて調整 */
+  }
+</style>
+
 {% endblock %}

@@ -1,11 +1,12 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
 
-from .models import Post, Connection
+
+from .models import Post, Connection, User
 
 
 class Home(LoginRequiredMixin, ListView):
@@ -167,3 +168,29 @@ class FollowList(LoginRequiredMixin, ListView):
         context['connection'] = Connection.objects.get_or_create(user=self.request.user)
         return context
 
+class SearchUser(LoginRequiredMixin, View):
+
+    def getFriendsList(self,username):
+        """
+        指定したユーザの友達リストを取得
+        :param: ユーザ名
+        :return: ユーザ名の友達リスト
+        """
+        try:
+            user = User.objects.get(username=username)
+            friends = list(user.following.all())
+            return friends
+        except:
+            return []
+    
+    def get(self, request, *args, **kwargs):
+        if 'search' in request.GET:
+            query = request.GET.get("search")
+            user_list = User.objects.exclude(username=request.user.username).filter(username__icontains=query)
+        else:
+            user_list = User.objects.exclude(username=request.user.username)
+
+        user_list = list(user_list)
+        
+        friends = self.getFriendsList(request.user.username)
+        return render(request, "search.html", {'users': user_list, 'friends': friends})
