@@ -60,10 +60,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
     def __str__(self):
-        return self.email
+        return self.username
 
 class Profile(models.Model):
     nickName = models.CharField(max_length=20)
