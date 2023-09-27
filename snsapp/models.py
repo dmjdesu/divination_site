@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 from config import settings
@@ -24,7 +23,7 @@ class Post(models.Model):
 
 
 class Connection(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='connections' , on_delete=models.CASCADE)
     following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='following', blank=True)
 
     def __str__(self):
@@ -33,7 +32,6 @@ class Connection(models.Model):
 class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields):
-
         if not email:
             raise ValueError('email is must')
 
@@ -43,13 +41,17 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password):
-        user = self.create_user(email, password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using= self._db)
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
 
-        return user
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
 
@@ -61,6 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email'] 
 
     def __str__(self):
         return self.username
@@ -76,3 +79,20 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.nickName
+    
+class Messages(models.Model):
+    
+    description = models.TextField()
+    sender_name = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="送信者", on_delete=models.CASCADE, related_name='sender')
+    receiver_name = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="受信者", on_delete=models.CASCADE, related_name='receiver')
+    time = models.TimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"To: {self.receiver_name} From: {self.sender_name}"
+    
+    class Meta:
+        ordering = ('timestamp',)
+        verbose_name = 'メッセージリスト'
+        verbose_name_plural = 'メッセージリスト'

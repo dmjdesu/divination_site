@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import Home, MyPost, CreatePost, DetailPost, UpdatePost, DeletePost,\
-                   LikeHome, FollowHome, FollowDetail, FollowList, LikeDetail, SearchUser
+                   LikeHome, FollowHome, FollowDetail, FollowList, LikeDetail, SearchUser, Message, UpdateMessage
 
 
 urlpatterns = [
@@ -16,4 +16,6 @@ urlpatterns = [
     path('follow-home/<int:pk>', FollowHome.as_view(), name='follow-home'),
     path('follow-detail/<int:pk>', FollowDetail.as_view(), name='follow-detail'),
     path('follow-list/', FollowList.as_view(), name='follow-list'),
+    path("chat/<str:username>", Message.as_view(), name="get_message"),  
+    path('api/messages', UpdateMessage.as_view()),
 ]

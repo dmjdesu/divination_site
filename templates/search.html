@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% load static %}
  {% block customcss %}
-<link rel="stylesheet" href="{% static 'style.css' %}" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 {% endblock customcss %} 
 
 {% block content %}
@@ -21,17 +21,18 @@
             </div>
           </div>
           <div class="inbox_chat">
-            {% for friend in friends %}
+            {% for following in friends %}
+              <a href="{% url 'get_message' following.username %}">
              <div class="chat_list active_chat">
               <div class="chat_people">
                 <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                 <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
+                  <h5>{{following.username}} <span class="chat_date">{{following.latest_message_timestamp}}</span></h5>
+                  <p>{{following.latest_message}}</p>
                 </div>
               </div>
             </div>
+              </a>
             {% endfor %}
          
           </div>

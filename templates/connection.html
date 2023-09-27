@@ -1,14 +1,11 @@
-{% extends 'base.html' %}
-{% load static %}
-
+{% extends 'base.html' %} 
+{% load static %} 
 {% block customcss %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-{% endblock customcss %}
-
-{% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock customcss %} {% block content %}
 <div class="container mt-3">
-    {% for item in object_list %}
-    <p>タイトル：<a href="#">{{item.author}}</a></p>
-    {% endfor %}
+  {% for item in object_list %}
+  <p>タイトル：<a href="#">{{item.author}}</a></p>
+  {% endfor %}
 </div>
 {% endblock content %}

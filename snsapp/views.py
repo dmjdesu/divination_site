@@ -1,12 +1,18 @@
-from django.db.models import Q
+from django.db.models import OuterRef, Subquery, Q, CharField, TextField
+from django.db.models.functions import Coalesce
+from django.db.models.expressions import Value, ExpressionWrapper
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser
+from .serializers import MessageSerializer
 
-
-from .models import Post, Connection, User
+from .models import Messages, Post, Connection, User
 
 
 class Home(LoginRequiredMixin, ListView):
@@ -168,29 +174,103 @@ class FollowList(LoginRequiredMixin, ListView):
         context['connection'] = Connection.objects.get_or_create(user=self.request.user)
         return context
 
-class SearchUser(LoginRequiredMixin, View):
-
-    def getFriendsList(self,username):
+def getFriendsList(self):
         """
         指定したユーザの友達リストを取得
         :param: ユーザ名
         :return: ユーザ名の友達リスト
         """
         try:
-            user = User.objects.get(username=username)
-            friends = list(user.following.all())
-            return friends
-        except:
+             # request.userのConnectionオブジェクトを取得
+            connection = self.request.user.connections
+
+            # Connectionオブジェクトからfollowing属性を使ってフォローしているユーザのリストを取得
+            following_users = connection.following.all()
+
+            # 各following_userに対する最新のメッセージのタイムスタンプのサブクエリを作成
+            latest_timestamp_subquery = Messages.objects.filter(
+                Q(sender_name=OuterRef('pk'), receiver_name=self.request.user) |
+                Q(sender_name=self.request.user, receiver_name=OuterRef('pk'))
+            ).order_by('-timestamp').values('timestamp')[:1]
+
+            # 各following_userに対する最新のメッセージのタイムスタンプのサブクエリを作成
+            latest_message_subquery = Messages.objects.filter(
+                Q(sender_name=OuterRef('pk'), receiver_name=self.request.user) |
+                Q(sender_name=self.request.user, receiver_name=OuterRef('pk'))
+            ).order_by('-timestamp').values('description')[:1]
+            
+
+            # DateTimeFieldを文字列に変換するためのExpressionWrapperを使用
+            timestamp_as_str = ExpressionWrapper(
+                Subquery(latest_timestamp_subquery),
+                output_field=CharField()
+            )
+
+            # ExpressionWrapperを使用してoutput_fieldをTextFieldに指定
+            message_as_textfield = ExpressionWrapper(
+                Subquery(latest_message_subquery),
+                output_field=CharField()
+            )
+
+            # サブクエリを使って、各following_userに最新のメッセージのタイムスタンプと内容をアノテーションとして追加
+            # Coalesceを使って、latest_message_timestampとlatest_messageがnullの場合にそれぞれ「未送信」と空白文字列を設定
+            following_users_with_latest_message = following_users.annotate(
+                latest_message_timestamp=Coalesce(
+                    timestamp_as_str,
+                    Value('未送信')
+                ),
+                latest_message=Coalesce(
+                    message_as_textfield,
+                    Value('')
+                ),
+            )
+            return following_users_with_latest_message
+        except Exception as ex:
+            print(ex)
             return []
+
+class SearchUser(LoginRequiredMixin, View):
     
     def get(self, request, *args, **kwargs):
         if 'search' in request.GET:
             query = request.GET.get("search")
             user_list = User.objects.exclude(username=request.user.username).filter(username__icontains=query)
         else:
-            user_list = User.objects.exclude(username=request.user.username)
+            user_list = User.objects.exclude()
 
         user_list = list(user_list)
-        
-        friends = self.getFriendsList(request.user.username)
+
+        friends = getFriendsList(self)
+       
         return render(request, "search.html", {'users': user_list, 'friends': friends})
+
+class Message(LoginRequiredMixin, View):
+    
+    def get(self,request, username):
+            """
+            特定ユーザ間のチャット情報を取得する
+            """
+            friend = User.objects.get(username=username)
+            current_user = request.user
+            messages = Messages.objects.filter(
+                (Q(sender_name=current_user.id) & Q(receiver_name=friend.id)) |
+                (Q(sender_name=friend.id) & Q(receiver_name=current_user.id))
+            )
+            friends = getFriendsList(self)
+            return render(request, "chat/messages.html",
+                            {'messages': messages,
+                            'friends': friends,
+                            'current_user': current_user, 'friend': friend})
+
+
+class UpdateMessage(View):
+    
+    def post(self, request, *args, **kwargs):
+        data = JSONParser().parse(request)
+        serializer = MessageSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        
+        return JsonResponse(serializer.errors, status=400)
