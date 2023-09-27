@@ -10,9 +10,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
+
+from snsapp.form import ProfileChangeForm
 from .serializers import MessageSerializer
 
-from .models import Messages, Post, Connection, User
+from .models import Messages, Post, Connection, Profile, User
 
 
 class Home(LoginRequiredMixin, ListView):
@@ -262,7 +264,6 @@ class Message(LoginRequiredMixin, View):
                             'friends': friends,
                             'current_user': current_user, 'friend': friend})
 
-
 class UpdateMessage(View):
     
     def post(self, request, *args, **kwargs):
@@ -274,3 +275,23 @@ class UpdateMessage(View):
             return JsonResponse(serializer.data, status=201)
         
         return JsonResponse(serializer.errors, status=400)
+    
+from django.views.generic import FormView
+
+class ProfileChangeView(LoginRequiredMixin, FormView):
+    
+    template_name = 'profile/change.html'
+    form_class = ProfileChangeForm
+    success_url = reverse_lazy('home')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        profile, created = Profile.objects.get_or_create(userPro=self.request.user, defaults={'nickName': 'デフォルトユーザー'})
+        initial['nickName'] = profile.nickName
+        initial['img'] = profile.img
+        return initial
+    
+    def form_valid(self, form):
+        profile = Profile.objects.get(userPro=self.request.user)
+        form.update(profile)
+        return super().form_valid(form)
