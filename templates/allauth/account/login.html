@@ -7,15 +7,14 @@
 
 <div class="socialaccount_ballot">
   <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login"
-    %}
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
 </div>
 
 {% else %}
 <p>
-  {% blocktrans %}If you have not created an account yet, then please
-  <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+  {% blocktrans %}まだアカウントを作成していない場合、先に
+  <a href="{{ signup_url }}">サインアップ</a>してください。{% endblocktrans %}
 </p>
 {% endif %}
 

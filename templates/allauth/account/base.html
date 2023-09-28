@@ -24,15 +24,18 @@
                 <span class='navbar-text'>{{ user }} - </span>
             </li>
             <li class='nav-item'>
-                <a class="nav-link" href='{% url "account_logout" %}' class='logout nav-link'>ログアウト</a>
+                <a  href='{% url "account_logout" %}' class='logout nav-link'>ログアウト</a>
             </li>
         {% else %}
             <li class='nav-item'>
-                <a class="nav-link" href='{% url "account_login" %}' class='login nav-link'>ログイン</a>
+                <a  href='{% url "account_login" %}' class='login nav-link'>ログイン</a>
             </li>
             <li class='nav-item'>
-                <a class="nav-link" href='{% url "account_signup" %}' class='signup nav-link'>新規登録</a>
+                <a href='{% url "account_signup" %}' class='signup nav-link'>新規登録</a>
             </li>
+            <li class='nav-item'>
+             <a href="{% url 'mydiviner' %}"  class='signup nav-link'>占い師一覧</a>
+             </li>
         {% endif %}
       </ul>
       <form class="form-inline mt-2 mt-md-0" action='{% url "home" %}' method='get'>

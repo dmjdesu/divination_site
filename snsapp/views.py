@@ -40,7 +40,14 @@ class MyPost(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user)
+    
+class MyDiviner(ListView):
+    """占い師一覧を表示"""
+    model = User
+    template_name = 'diviner_list.html'
 
+    def get_queryset(self):
+        return User.objects.filter(usertype="占い師")
 
 class CreatePost(LoginRequiredMixin, CreateView):
     """投稿フォーム"""

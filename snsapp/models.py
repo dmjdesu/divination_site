@@ -54,11 +54,24 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    
+    USER_TYPE_CHOICES = (
+        ('占い師', '占い師'),
+        ('顧客', '顧客'),
+    )
+
+    DIVINER_TYPE_CHOICES = (
+        ('命術', '命術'),
+        ('卜術', '卜術'),
+        ('相術', '相術'),
+    )
 
     email = models.EmailField(max_length=50, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     username = models.CharField(max_length=100, verbose_name="ユーザー名")
+    usertype = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    divinertype  = models.CharField(max_length=10, choices=DIVINER_TYPE_CHOICES)
 
     objects = UserManager()
 
