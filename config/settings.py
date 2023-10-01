@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account', 
     'allauth.socialaccount', 
     'django_bootstrap5',
+    'shopping',
 ]
 
 
@@ -165,3 +166,15 @@ IMAGE_URL = '/images/'
 ACCOUNT_FORMS = {
 'signup': 'snsapp.form.CustomSignupForm',
 }
+
+# Email設定
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Stripeのパブリックキー
+STRIPE_PUBLIC_KEY = 'pk_test_51NFYcGKaJAPJ0ac3MEsJb4OpmL1wK335JC5cWSvjb1kspBCaElhdaozB8gNq7WVIi2XH1vMUL21PvfhxiAds7g4R007HgRkV83'
+
+# Stripeのシークレットキー
+STRIPE_SECRET_KEY = 'sk_test_51NFYcGKaJAPJ0ac3a2k1JSJmHP8wcZmjGB8RD3l2MXJm7zBKTnBDwb1QNBg4PqvZr7XkcwuMkIImvmPyw8xWrudG00BF4q2454'
+
+# StripeのWebhookのシークレットキー
+STRIPE_WEBHOOK_SECRET = 'whsec_cd6f5b53607526e63911ac4b2343795a1107d4e4d19aa9dac92814c500fc88d5'

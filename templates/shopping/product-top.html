@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block customcss %}
+  <link rel="stylesheet" href='{% static "style.css" %}' />
+{% endblock customcss %}
+
+{% block content %}
+<section class="mt-4 bg-light">
+  <h1 class="mb-4">商品一覧</h1>
+  
+  <div class="row">
+    <!-- 商品一覧をループで表示 -->
+    {% for product in product_list %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <!-- 画像表示部分 -->
+          <img src="{{ product.file.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <!-- 商品に紐づく価格情報を表示 -->
+            {% for price_data in product.Prices.all %}
+              <p class="text-primary">価格：¥{{ price_data.get_display_price }}</p>
+            {% endfor %}
+          </div>
+
+          <div class="card-footer">
+            <form action="{% url 'create-checkout-session' product.id %}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-info w-100">購入画面に進む</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+<style type="text/css">
+  /* 商品一覧の背景色を指定 */
+.container.container-maxwidth {
+    background-color: #YOUR_COLOR_CODE; /* こちらに適切な色コードを入れてください */
+}
+
+/* 商品のカードに影を追加 */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+</style>
+{% endblock content %}

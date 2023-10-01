@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 
-from snsapp.form import ProfileChangeForm
+from snsapp.form import DivinerTypeForm, ProfileChangeForm
 from .serializers import MessageSerializer
 
 from .models import Messages, Post, Connection, Profile, User
@@ -47,7 +47,17 @@ class MyDiviner(ListView):
     template_name = 'diviner_list.html'
 
     def get_queryset(self):
-        return User.objects.filter(usertype="占い師")
+        queryset = User.objects.filter(usertype="占い師")
+        
+        divinertype = self.request.GET.get('divinertype')
+        if divinertype:
+            queryset = queryset.filter(divinertype=divinertype)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = DivinerTypeForm(self.request.GET or None)
+        return context
 
 class CreatePost(LoginRequiredMixin, CreateView):
     """投稿フォーム"""
