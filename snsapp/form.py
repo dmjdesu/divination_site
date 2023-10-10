@@ -22,6 +22,9 @@ class CustomSelect(Select):
             context['label_id'] = self.label_id
         return context
 
+class SendMessageForm(forms.Form):
+    message = forms.CharField(widget=forms.Textarea)
+
 class CustomSignupForm(SignupForm):  # SignupFormを継承する
     usertype = forms.ChoiceField(
         choices=User.USER_TYPE_CHOICES,  # FoodChoicesから適切な選択肢に変更

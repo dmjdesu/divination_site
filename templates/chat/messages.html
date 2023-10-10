@@ -25,7 +25,14 @@
           <div class="chat_list active_chat">
             <div class="chat_people">
               <div class="chat_img">
-                 <img width="100" height="100" class="rounded img-fluid" src="{{ following.img.url }}" alt="avatar_thumbnail" onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'">
+                <img
+                  width="100"
+                  height="100"
+                  class="rounded img-fluid"
+                  src="{{ following.img.url }}"
+                  alt="avatar_thumbnail"
+                  onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+                />
               </div>
               <div class="chat_ib">
                 <h5>
@@ -44,7 +51,7 @@
     </div>
     <div class="mesgs">
       <div class="msg_history" id="board">
-        {% for message in messages %} {% if friend == message.sender_name %}
+        {% for message in chat_messages %} {% if friend == message.sender_name %}
         <div class="incoming_msg">
           <div class="incoming_msg_img">
             <img src="{{ friend.thumbnail.url }}" alt="sunil" />

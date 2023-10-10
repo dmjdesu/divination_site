@@ -7,27 +7,17 @@ def upload_path(instance, filename):
     ext = filename.split('.')[-1]
     return '/'.join(['images', str(instance.userPro.id)+str(instance.nickName)+str(".")+str(ext)])
 
-# Create your models here.
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='related_post', blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ["-created_at"]
-
-
 class Connection(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='connections' , on_delete=models.CASCADE)
     following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='following', blank=True)
 
     def __str__(self):
         return self.user.username
+    
+    def follow(self, user_to_follow):
+        if user_to_follow != self.user:  # ユーザーが自分自身をフォローしないようにする
+            self.following.add(user_to_follow)
+            self.save()
 
 class UserManager(BaseUserManager):
 
@@ -120,9 +110,6 @@ class Messages(models.Model):
     time = models.TimeField(auto_now_add=True)
     seen = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"To: {self.receiver_name} From: {self.sender_name}"
     
     class Meta:
         ordering = ('timestamp',)

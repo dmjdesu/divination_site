@@ -19,7 +19,6 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Transaction)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Price)
-admin.site.register(Post)
 admin.site.register(Connection)
 admin.site.register(User)
 admin.site.register(Profile,ProfileAdmin)

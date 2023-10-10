@@ -1,6 +1,7 @@
 from django.db.models import OuterRef, Subquery, Q, CharField, TextField
 from django.db.models.functions import Coalesce
 from django.db.models.expressions import Value, ExpressionWrapper
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -10,21 +11,28 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
+from django.views.generic.edit import ProcessFormView
+from django.urls import reverse
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotAllowed
 
-from snsapp.form import DivinerTypeForm, ProfileChangeForm
+from snsapp.form import DivinerTypeForm, ProfileChangeForm, SendMessageForm
 from .serializers import MessageSerializer
 
-from .models import Messages, Post, Connection, Profile, User
+from .models import Messages, Connection, Profile, User
 
 
 class Home(LoginRequiredMixin, ListView):
     """HOMEページで、自分以外のユーザー投稿をリスト表示"""
-    model = Post
-    template_name = 'list.html'
+    model = User
+    template_name = 'diviner_list.html'
 
     def get_queryset(self):
         """リクエストユーザーのみ除外"""
-        return Post.objects.exclude(user=self.request.user)
+        return User.objects.filter(usertype="占い師")
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -32,14 +40,6 @@ class Home(LoginRequiredMixin, ListView):
         context['connection'] = Connection.objects.get_or_create(user=self.request.user)
         return context
     
-
-class MyPost(LoginRequiredMixin, ListView):
-    """自分の投稿のみ表示"""
-    model = Post
-    template_name = 'list.html'
-
-    def get_queryset(self):
-        return Post.objects.filter(user=self.request.user)
     
 class MyDiviner(ListView):
     """占い師一覧を表示"""
@@ -59,91 +59,6 @@ class MyDiviner(ListView):
         context['form'] = DivinerTypeForm(self.request.GET or None)
         return context
 
-class CreatePost(LoginRequiredMixin, CreateView):
-    """投稿フォーム"""
-    model = Post
-    template_name = 'create.html'
-    fields = ['title', 'content']
-    success_url = reverse_lazy('mypost')
-
-    def form_valid(self, form):
-        """投稿ユーザーをリクエストユーザーと紐付け"""
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
-class DetailPost(LoginRequiredMixin, DetailView):
-    """投稿詳細ページ"""
-    model = Post
-    template_name = 'detail.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['connection'] = Connection.objects.get_or_create(user=self.request.user)
-        return context
-
-
-class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    """投稿編集ページ"""
-    model = Post
-    template_name = 'update.html'
-    fields = ['title', 'content']
-
-
-    def get_success_url(self,  **kwargs):
-        """編集完了後の遷移先"""
-        pk = self.kwargs["pk"]
-        return reverse_lazy('detail', kwargs={"pk": pk})
-    
-    def test_func(self, **kwargs):
-        """アクセスできるユーザーを制限"""
-        pk = self.kwargs["pk"]
-        post = Post.objects.get(pk=pk)
-        return (post.user == self.request.user) 
-
-
-class DeletePost(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """投稿編集ページ"""
-    model = Post
-    template_name = 'delete.html'
-    success_url = reverse_lazy('mypost')
-
-    def test_func(self, **kwargs):
-        """アクセスできるユーザーを制限"""
-        pk = self.kwargs["pk"]
-        post = Post.objects.get(pk=pk)
-        return (post.user == self.request.user) 
-
-
-###############################################################
-#いいね処理
-class LikeBase(LoginRequiredMixin, View):
-    """いいねのベース。リダイレクト先を以降で継承先で設定"""
-    def get(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
-        related_post = Post.objects.get(pk=pk)
-
-        if self.request.user in related_post.like.all():
-            obj = related_post.like.remove(self.request.user)
-        else:
-            obj = related_post.like.add(self.request.user)  
-        return obj
-
-
-class LikeHome(LikeBase):
-    """HOMEページでいいねした場合"""
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-        return redirect('home')
-
-
-class LikeDetail(LikeBase):
-    """詳細ページでいいねした場合"""
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-        pk = self.kwargs['pk'] 
-        return redirect('detail', pk)
-###############################################################
 
 
 ###############################################################
@@ -174,24 +89,67 @@ class FollowDetail(FollowBase):
         super().get(request, *args, **kwargs)
         pk = self.kwargs['pk'] 
         return redirect('detail', pk)
-###############################################################
+    
+class DivinerDetail(DetailView, ProcessFormView):
+    model = get_user_model()
+    template_name = 'diviner_detail.html'
 
-
-class FollowList(LoginRequiredMixin, ListView):
-    """フォローしたユーザーの投稿をリスト表示"""
-    model = Post
-    template_name = 'list.html'
-
-    def get_queryset(self):
-        """フォローリスト内にユーザーが含まれている場合のみクエリセット返す"""
-        my_connection = Connection.objects.get_or_create(user=self.request.user)
-        all_follow = my_connection[0].following.all()
-        return Post.objects.filter(user__in=all_follow)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['connection'] = Connection.objects.get_or_create(user=self.request.user)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message_form'] = SendMessageForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = SendMessageForm(request.POST)
+        if form.is_valid():
+            pk = self.kwargs.get("pk")
+            user = get_object_or_404(get_user_model(), id=pk)
+            
+            # メッセージの送信処理を加える
+            message = form.cleaned_data.get("message")
+            receiver = user
+            sender = request.user  # 仮定として、リクエストユーザーが送信者だとします
+             # Check if user is already following the user_to_follow, if not, follow
+            connection, created = Connection.objects.get_or_create(user=request.user)
+            if user not in connection.following.all():
+                connection.follow(user)
+                # Optionally, you might want to send a success message for the following action too
+                messages.success(request, f'You are now following {user.username}.')
+
+            # メッセージオブジェクトを作成し、保存します
+            message = Messages(
+                description=message,
+                sender_name=sender,
+                receiver_name=receiver
+            )
+            message.save()
+            
+            # 成功メッセージをユーザーに表示
+            messages.success(request, 'メッセージを送信しました。')
+            return HttpResponseRedirect(reverse('get_message', args=[user.username]))
+        return self.get(request, *args, **kwargs)
+
+@login_required
+def follow_diviner(request, pk):
+    # ユーザを取得
+    user_to_follow = get_object_or_404(get_user_model(), pk=pk)
+
+    if request.user == user_to_follow:
+        messages.error(request, '自分自身をフォローすることはできません。')
+        return redirect('mydiviner')  # 適切なビュー名に変更
+
+    # Connectionモデルを取得または作成
+    connection, created = Connection.objects.get_or_create(user=request.user)
+    
+    # フォロー処理
+    if user_to_follow not in connection.following.all():
+        connection.following.add(user_to_follow)
+        messages.success(request, f'{user_to_follow.username}をフォローしました。')
+    else:
+        messages.info(request, f'{user_to_follow.username}は既にフォローしています。')
+
+    # 以前のページにリダイレクト
+    return HttpResponseRedirect(reverse('get_message', args=[user_to_follow.username]))
 
 def getFriendsList(self):
         """
@@ -271,15 +229,34 @@ class Message(LoginRequiredMixin, View):
             """
             friend = User.objects.get(username=username)
             current_user = request.user
-            messages = Messages.objects.filter(
+            chat_messages = Messages.objects.filter(
                 (Q(sender_name=current_user.id) & Q(receiver_name=friend.id)) |
                 (Q(sender_name=friend.id) & Q(receiver_name=current_user.id))
             )
             friends = getFriendsList(self)
             return render(request, "chat/messages.html",
-                            {'messages': messages,
+                            {'chat_messages': chat_messages,
                             'friends': friends,
                             'current_user': current_user, 'friend': friend})
+
+@login_required
+def follow_user(request, user_to_follow_id):
+    if request.method == "POST":  # 通常、フォローアクションはPOSTリクエストを使用します
+        # 現在のユーザーとフォローしたいユーザーを取得
+        user_to_follow = get_object_or_404(get_user_model(), pk=user_to_follow_id)
+
+        # 現在のユーザーのConnectionオブジェクトを取得または作成
+        connection, created = Connection.objects.get_or_create(user=request.user)
+
+        # Connectionオブジェクトを使用してユーザーをフォロー
+        connection.follow(user_to_follow)
+
+        # そして通常、ユーザーをどこかにリダイレクトします（例: プロフィールページ）
+        return redirect('profile', username=user_to_follow.username)
+
+    else:
+        # GETなど他のリクエストメソッドを不許可として、405 Method Not Allowedレスポンスを返す
+        return HttpResponseNotAllowed(['POST'])
 
 class UpdateMessage(View):
     

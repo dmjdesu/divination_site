@@ -141,6 +141,15 @@ else:
 
 AUTH_USER_MODEL = 'snsapp.User'
 
+from django.contrib.messages import constants as messages_constants
+
+MESSAGE_TAGS = {
+    messages_constants.ERROR: 'danger',
+    # 他のメッセージレベルも必要に応じてマッピングします
+}
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 ###### ↓認証系の設定 #####
 AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
