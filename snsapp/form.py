@@ -2,7 +2,9 @@ from django.forms import ModelForm
 from snsapp.models import *
 from django import forms
 from django.forms.widgets import Select
-from django.db import models
+
+from snsapp.widgets import MySelect2MultipleWidget
+from .models import User  # User モデルをインポートする
 from allauth.account.forms import SignupForm
 
 class FoodChoices(models.TextChoices):
@@ -32,11 +34,13 @@ class CustomSignupForm(SignupForm):  # SignupFormを継承する
         label='ユーザータイプ',
     )
     
-    divinertype = forms.ChoiceField(
-        choices=User.DIVINER_TYPE_CHOICES,
+    divinertype = forms.MultipleChoiceField(  # MultipleChoiceFieldに変更
+        choices=DIVINER_TYPE_CHOICES,
         required=False,
         label='占いの種類',
-        widget=CustomSelect(label_id='id_divinertype_label')  # カスタムウィジェットを適用
+        widget=MySelect2MultipleWidget(attrs={  # Use the custom widget
+            'class': 'form-control col-12',
+        })
     )
 
     def __init__(self, *args, **kwargs):
@@ -57,7 +61,7 @@ class CustomSignupForm(SignupForm):  # SignupFormを継承する
         
         # usertypeが占い師の場合、divinertypeも保存
         if user.usertype == '占い師':
-            user.divinertype = self.cleaned_data['divinertype']
+            user.divinertype.set(self.cleaned_data['divinertype'])  # setメソッドを使用して複数選択された値を保存
             
         user.save()
         return user
@@ -87,5 +91,9 @@ class ProfileChangeForm(ModelForm):
 
 class DivinerTypeForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['divinertype']
+        model = DivinerType
+        fields = ['name']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].choices = DIVINER_TYPE_CHOICES

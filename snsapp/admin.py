@@ -23,3 +23,5 @@ admin.site.register(Connection)
 admin.site.register(User)
 admin.site.register(Profile,ProfileAdmin)
 admin.site.register(Messages, MessagesAdmin)   #
+admin.site.register(DivinerType)
+admin.site.register(Cost)

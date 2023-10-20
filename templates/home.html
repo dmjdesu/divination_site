@@ -2,11 +2,6 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 {% endblock customcss %} {% block content %}
 <div class="container mt-3">
-  <form method="get" action="">
-    {{ form.name }}
-    <button type="submit" class="btn btn-primary">絞り込む</button>
-  </form>
-
   {% for item in object_list %}
   <div class="alert alert-success" role="alert">
     <p>

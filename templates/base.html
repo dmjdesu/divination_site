@@ -24,6 +24,7 @@
       type="text/javascript"
       src="https://code.jquery.com/jquery-3.2.1.min.js"
     ></script>
+   
     {% block customcss %} {% endblock customcss %}
 
     <title>SNSアプリサンプル</title>
@@ -62,6 +63,7 @@
             <a class="nav-link" href="{% url 'product-top-page' %}"
               >ポイント購入</a
             >
+            <a class="nav-link" href="/accounts/logout/">ログアウト</a>
           </div>
         </div>
         <div>
@@ -81,7 +83,8 @@
               </svg>
             </a>
             <a href="{% url 'change' %}" class="d-flex align-items-center">
-              <span class="mr-2">{{request.user.username}}さん</span>
+            <span class="mr-2 username-span"></span><span class="points-span"></span>
+              {% if request.user.userPro.img %}
               <img
                 width="50"
                 height="50"
@@ -89,6 +92,7 @@
                 src="{{ request.user.userPro.img.url }}"
                 alt="avatar_thumbnail"
               />
+              {% endif %}
             </a>
           </div>
         </div>

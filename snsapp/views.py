@@ -4,7 +4,7 @@ from django.db.models.expressions import Value, ExpressionWrapper
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.decorators.csrf import csrf_exempt
@@ -20,15 +20,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed
 
 from snsapp.form import DivinerTypeForm, ProfileChangeForm, SendMessageForm
-from .serializers import MessageSerializer
+from .serializers import MessageSerializer, UserSerializer
 
-from .models import Messages, Connection, Profile, User
-
+from .models import DIVINER_TYPE_CHOICES, Cost, Messages, Connection, Profile, User
 
 class Home(LoginRequiredMixin, ListView):
     """HOMEページで、自分以外のユーザー投稿をリスト表示"""
     model = User
-    template_name = 'diviner_list.html'
+    template_name = 'home.html'
 
     def get_queryset(self):
         """リクエストユーザーのみ除外"""
@@ -49,9 +48,16 @@ class MyDiviner(ListView):
     def get_queryset(self):
         queryset = User.objects.filter(usertype="占い師")
         
-        divinertype = self.request.GET.get('divinertype')
-        if divinertype:
-            queryset = queryset.filter(divinertype=divinertype)
+        divinertype_id = self.request.GET.get('name')
+        diviner_type_dict = dict((value,name ) for value, name in DIVINER_TYPE_CHOICES)
+        if divinertype_id:
+            try:
+                # divinertypeフィールドに対する__nameルックアップを使用してフィルタリングします。
+                queryset = queryset.filter(divinertype__name__icontains= diviner_type_dict.get(int(divinertype_id)))
+            except ValueError:
+                print("ValueError")
+                # ValueErrorをキャッチし、エラーメッセージをログに記録するなどの処理を追加します。
+                pass  
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -64,18 +70,38 @@ class MyDiviner(ListView):
 ###############################################################
 #フォロー処理
 class FollowBase(LoginRequiredMixin, View):
-    """フォローのベース。リダイレクト先を以降で継承先で設定"""
-    def get(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
-        target_user = Post.objects.get(pk=pk).user
+    pass
+    # """フォローのベース。リダイレクト先を以降で継承先で設定"""
+    # def get(self, request, *args, **kwargs):
+    #     pk = self.kwargs['pk']
+    #     target_user = Post.objects.get(pk=pk).user
 
-        my_connection = Connection.objects.get_or_create(user=self.request.user)
+    #     my_connection = Connection.objects.get_or_create(user=self.request.user)
 
-        if target_user in my_connection[0].following.all():
-            obj = my_connection[0].following.remove(target_user)
-        else:
-            obj = my_connection[0].following.add(target_user)
-        return obj
+    #     if target_user in my_connection[0].following.all():
+    #         obj = my_connection[0].following.remove(target_user)
+    #     else:
+    #         obj = my_connection[0].following.add(target_user)
+    #     return obj
+
+def deduct_points(user, action_label):
+    try:
+        # コストオブジェクトを取得
+        print(action_label)
+        cost = Cost.objects.get(label=action_label)
+    except Cost.DoesNotExist:
+        # コストオブジェクトが存在しない場合はエラーを処理
+        return {"error": "ポイントの指定が間違っています。"}
+
+    # ユーザーのポイントが十分であることを確認
+    if user.points < cost.point:
+        return {"error": "ポイントが足りません。"}
+
+    # ユーザーのポイントを減算
+    user.points -= cost.point
+    user.save()
+
+    return {"success": f"{cost.point} points deducted"}
 
 class FollowHome(FollowBase):
     """HOMEページでフォローした場合"""
@@ -115,6 +141,15 @@ class DivinerDetail(DetailView, ProcessFormView):
                 connection.follow(user)
                 # Optionally, you might want to send a success message for the following action too
                 messages.success(request, f'You are now following {user.username}.')
+
+            action_label = "send"
+
+            result = deduct_points(user, action_label)
+
+            # エラー処理
+            if "error" in result:
+                # エラーメッセージを表示
+                return render(request, "error.html", {"error_message": result["error"]})
 
             # メッセージオブジェクトを作成し、保存します
             message = Messages(
@@ -262,6 +297,18 @@ class UpdateMessage(View):
     
     def post(self, request, *args, **kwargs):
         data = JSONParser().parse(request)
+        action_label = "send"
+        result = deduct_points(request.user, action_label)
+
+        receiver_user = User.objects.get(id=data["receiver_name"])
+
+        # エラー処理
+        if "error" in result:
+            # エラーメッセージを表示
+            print(result)
+            messages.error(request, result["error"])
+            redirect_url = reverse('get_message', args=[receiver_user.username])
+            return JsonResponse({"redirect": redirect_url}, status=400)        
         serializer = MessageSerializer(data=data)
         
         if serializer.is_valid():
@@ -289,3 +336,14 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         profile = Profile.objects.get(userPro=self.request.user)
         form.update(profile)
         return super().form_valid(form)
+    
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+class UserPointsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)

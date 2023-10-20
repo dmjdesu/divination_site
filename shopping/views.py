@@ -92,6 +92,8 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
 
+        request.user.points += product.point
+
         # イベント情報取得
         customer_name  = session["customer_details"]["name"]     # 顧客名
         customer_email = session["customer_details"]["email"]    # 顧客メール

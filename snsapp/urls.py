@@ -13,4 +13,5 @@ urlpatterns = [
     path("chat/<str:username>", Message.as_view(), name="get_message"),  
     path('api/messages', UpdateMessage.as_view()),
     path('change/', ProfileChangeView.as_view(), name="change"),
+    path('api/user-points/', UserPointsView.as_view(), name='user-points'),
 ]

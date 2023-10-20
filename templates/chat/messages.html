@@ -1,6 +1,21 @@
 {% extends '../base.html' %} {% load static %} {% block title %}
 <h3 class="text-center">Django-Chat画面</h3>
 {% endblock %} {% block content %}
+<script>
+  function updateUserPoints() {
+    fetch("/api/user-points/")
+      .then((response) => response.json())
+      .then((data) => {
+        const usernameSpan = document.querySelector(".username-span");
+        const pointsSpan = document.querySelector(".points-span");
+        usernameSpan.textContent = `${data.username}さん`;
+        pointsSpan.textContent = `(${data.points}pt)`;
+      });
+  }
+
+  // ページロード時にユーザーのポイントを更新
+  window.addEventListener("load", updateUserPoints);
+</script>
 <div class="messaging">
   <div class="inbox_msg">
     <div class="inbox_people">
@@ -51,7 +66,8 @@
     </div>
     <div class="mesgs">
       <div class="msg_history" id="board">
-        {% for message in chat_messages %} {% if friend == message.sender_name %}
+        {% for message in chat_messages %} 
+        {% if friend == message.sender_name %}
         <div class="incoming_msg">
           <div class="incoming_msg_img">
             <img src="{{ friend.thumbnail.url }}" alt="sunil" />
@@ -329,8 +345,15 @@
         let time = today.getHours() + ":" + today.getMinutes();
         field = field.replace("{time}", time);
         $("#board").append(field);
+        updateUserPoints();
       }
-    );
+    ).fail(function (response) {
+      if (response.responseJSON && response.responseJSON.redirect) {
+        window.location.href = response.responseJSON.redirect;
+      } else {
+        // ... 任意のエラー処理
+      }
+    });
   }
 </script>
 {% endblock %}

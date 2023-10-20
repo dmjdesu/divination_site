@@ -10,6 +10,8 @@ class Product(models.Model):
     stripe_product_id = models.CharField(max_length=100)
     # 商品写真登録用のファイル
     file = models.FileField(upload_to="product_files/", blank=True, null=True)
+    # ポイント
+    point = models.PositiveIntegerField(default=0)
 
     # admin画面で商品名表示
     def __str__(self):

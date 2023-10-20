@@ -3,6 +3,15 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 from config import settings
 
+SHOP_LABEL = (
+    ("send", 'send mesasge'),
+    ("divination", 'send divination'),
+)
+
+class Cost(models.Model):
+    label = models.CharField(max_length=30, choices=SHOP_LABEL)
+    point = models.PositiveIntegerField(default=0)
+
 def upload_path(instance, filename):
     ext = filename.split('.')[-1]
     return '/'.join(['images', str(instance.userPro.id)+str(instance.nickName)+str(".")+str(ext)])
@@ -42,6 +51,32 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+DIVINER_TYPE_CHOICES = (
+        (11, '命術_四柱推命'),
+        (12, '命術_紫微斗数'),
+        (13, '命術_風水'),
+        (21, '卜術_易経'),
+        (22, '卜術_タロット'),
+        (23, '卜術_ルーン'),
+        (24, '卜術_オーラ'),
+        (25, '卜術_ペンデュラム'),
+        (31, '相術_手相'),
+        (32, '相術_顔相'),
+        (33, '相術_人相'),
+        (34, '相術_波動'),
+        (41, '霊感_オラクルカード'),
+        (42, '霊感_クレアボヤント'),
+        (43, '霊感_透視'),
+        (44, '霊感_オーラリーディング'),
+        (51, '心理_心理学'),
+        (52, '心理_占星術'),
+        (53, '心理_動物占い'),
+        (61, '数秘術'),
+        (71, 'ドリームリーディング'),
+    )
+
+class DivinerType(models.Model):
+    name = models.CharField(max_length=30, choices=DIVINER_TYPE_CHOICES)
 
 class User(AbstractBaseUser, PermissionsMixin):
     
@@ -50,37 +85,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('顧客', '顧客'),
     )
 
-    DIVINER_TYPE_CHOICES = (
-        ('命術_四柱推命', '命術_四柱推命'),
-        ('命術_紫微斗数', '命術_紫微斗数'),
-        ('命術_風水', '命術_風水'),
-        ('卜術_易経', '卜術_易経'),
-        ('卜術_タロット', '卜術_タロット'),
-        ('卜術_ルーン', '卜術_ルーン'),
-        ('卜術_オーラ', '卜術_オーラ'),
-        ('卜術_ペンデュラム', '卜術_ペンデュラム'),
-        ('相術_手相', '相術_手相'),
-        ('相術_顔相', '相術_顔相'),
-        ('相術_人相', '相術_人相'),
-        ('相術_波動', '相術_波動'),
-        ('霊感_オラクルカード', '霊感_オラクルカード'),
-        ('霊感_クレアボヤント', '霊感_クレアボヤント'),
-        ('霊感_透視', '霊感_透視'),
-        ('霊感_オーラリーディング', '霊感_オーラリーディング'),
-        ('心理_心理学', '心理_心理学'),
-        ('心理_占星術', '心理_占星術'),
-        ('心理_動物占い', '心理_動物占い'),
-        ('数秘術', '数秘術'),
-        ('ドリームリーディング', 'ドリームリーディング'),
-        # その他にも様々な種類が考えられます
-    )
-
     email = models.EmailField(max_length=50, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     username = models.CharField(max_length=100, verbose_name="ユーザー名")
     usertype = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
-    divinertype  = models.CharField(max_length=30, choices=DIVINER_TYPE_CHOICES)
+    divinertype = models.ManyToManyField(DivinerType, blank=True, null=True)
+    # ポイント
+    points = models.PositiveIntegerField(default=0)
 
     objects = UserManager()
 
@@ -89,6 +101,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+    @property
+    def divinertype_display(self):
+        # divinertypeの各インスタンスの__str__メソッドを呼び出し、
+        # 結果をカンマで区切って連結します。
+        return ", ".join(str(divinertype.name) for divinertype in self.divinertype.all())
 
 class Profile(models.Model):
     nickName = models.CharField(max_length=20)
