@@ -153,5 +153,20 @@
         }, 5000);
     });
 </script>
+<script>
+  function updateUserPoints() {
+    fetch("/api/user-points/")
+      .then((response) => response.json())
+      .then((data) => {
+        const usernameSpan = document.querySelector(".username-span");
+        const pointsSpan = document.querySelector(".points-span");
+        usernameSpan.textContent = `${data.username}さん`;
+        pointsSpan.textContent = `(${data.points}pt)`;
+      });
+  }
+
+  // ページロード時にユーザーのポイントを更新
+  window.addEventListener("load", updateUserPoints);
+</script>
 </script>
 </html>
