@@ -7,7 +7,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')), 
     path('', include('snsapp.urls')), 
-    path('shopping/', include('shopping.urls')), 
+    path('shopping/', include('shopping.urls')),
+    path("chat/", include("chat.urls")),
 ]
 
 if settings.DEBUG:

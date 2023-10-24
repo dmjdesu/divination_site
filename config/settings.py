@@ -26,12 +26,13 @@ SECRET_KEY = 'h43&^c57q6+412$crxl3)i68ef=l!#fs=8vha+7di&t4i$u8w9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ik1-342-31112.vs.sakura.ne.jp","ik1-342-31112.vs.sakura.ne.jp","127.0.0.1"]
+ALLOWED_HOSTS = ["localhost:8000","localhost","ik1-342-31112.vs.sakura.ne.jp","ik1-342-31112.vs.sakura.ne.jp","127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +47,20 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'shopping',
     'django_select2',
+    "chat",
 ]
+
+ASGI_APPLICATION = "config.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+...
 
 
 MIDDLEWARE = [
