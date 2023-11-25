@@ -1,57 +1,229 @@
-{% extends 'base.html' %}
-
 {% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <style>
+      body {
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        padding-bottom: 80px; /* footerの高さ分のpaddingを追加 */
+      }
+      .scrollable-container {
+        max-height: 75%; /* この値は必要に応じて調整してください */
+        overflow-y: auto;
+        padding: 10px; /* 必要に応じてパディングを追加 */
+      }
+      .truncate-text {
+        width: 150px; /* 必要な幅を指定してください */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+        text-decoration-line: none;
+      }
+      .rounded-circle {
+        border-radius: 50%;
+      }
+      .container {
+        flex: 1;
+        position: relative;
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100%;
+        margin: 0 auto; /* 追加 */
+        flex-grow: 1;
+        width: 100%;
+      }
+      .footer {
+        position: fixed; /* fixedからabsoluteに変更 */
+        bottom: 0;
+        left: 0; /* 追加 */
+        right: 0; /* 追加 */
+        width: 100%; /* 追加 */
+        margin: 0 auto; /* 追加 */
+        padding: 20px 0;
+        background-color: #333;
+      }
+      .points {
+        font-size: 24px;
+      }
+      .message-content {
+        display: flex;
+        flex-direction: column; /* 子要素を縦方向に並べる */
+        justify-content: space-between; /* 上下中央に配置 */
+        height: 100%; /* 全高さを利用 */
+        margin-left: auto; /* 左側の余白を自動で調整 */
+        margin-right: auto; /* 右側の余白を自動で調整 */
+        padding-left: 20px; /* 左側の余白を20pxとる */
+        padding-right: 20px; /* 右側の余白を20pxとる */
+        word-wrap: break-word; /* 文字列を折り返す */
+        overflow-wrap: break-word; /* 文字列を折り返す (新しい名前のプロパティ) */
+      }
 
-{% block customcss %}
-  <link rel="stylesheet" href='{% static "style.css" %}' />
-{% endblock customcss %}
+      .item-content:first-child {
+        /* 最初の .item-content 要素、つまり username をターゲットにする */
+        align-self: center; /* 自分自身を中央に配置 */
+        margin-top: 10px; /* 任意の余白を上部に追加して位置を調整 (値は調整可能) */
+      }
 
-{% block content %}
-<section class="mt-4 bg-light">
-  <h1 class="mb-4">商品一覧</h1>
-  
-  <div class="row">
-    <!-- 商品一覧をループで表示 -->
-    {% for product in product_list %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <!-- 画像表示部分 -->
-          <img src="{{ product.file.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+      .item-content {
+        padding-top: 10px; /* 上の余白 */
+        padding-bottom: 10px; /* 下の余白 */
+        font-family: "リュウミン R-KL";
+        word-wrap: break-word; /* 文字列を折り返す */
+        overflow-wrap: break-word; /* 文字列を折り返す (新しい名前のプロパティ) */
+        white-space: normal; /* テキストを自然に折り返す */
+      }
 
-          <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description }}</p>
-            <!-- 商品に紐づく価格情報を表示 -->
-            {% for price_data in product.Prices.all %}
-              <p class="text-primary">価格：¥{{ price_data.get_display_price }}</p>
-            {% endfor %}
+      .user-section,
+      .message-section {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 20%;
+      }
+
+      .message-section {
+        align-items: center; /* オプション: 項目を垂直に中央揃えにする場合 */
+        width: 100%; /* オプション: 100%の幅を持つことで、項目の間に最大の間隔を確保します */
+      }
+
+      .timestamp {
+        margin-right: 2%;
+      }
+      .message-box {
+        box-sizing: border-box;
+        background-image: var(--background-url);
+        width: 100%;
+        height: 150px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+        background-position: center; /* 画像を中央に配置する */
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .fee-box {
+        box-sizing: border-box;
+        background-image: var(--background-url);
+        width: 100%;
+        height: 150px;
+        background-size: 15% 80%;
+        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+        background-position: 90% center;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end; /* 子要素を右寄せにする */
+        position: relative;
+      }
+      .inner-element {
+        position: absolute; /* 親要素に対して絶対位置指定 */
+        top: 50%; /* 親要素の上端からの距離を50%に設定 */
+        left: 85%; /* 親要素の左端からの距離を50%に設定 */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* 要素を自身のサイズの半分だけ左上に移動させる */
+        font-size: 24px; /* フォントサイズを大きく設定 */
+        width: 100px; /* 子要素の幅 */
+        height: 50px; /* 子要素の高さ */
+        /* その他必要なスタイル */
+      }
+      .bottom-right-text {
+        position: absolute;
+        bottom: 20px; /* 10pxは例としての値で、必要に応じて変更してください */
+        right: 1px; /* 同上 */
+        /* 必要に応じてその他のスタイルを追加 */
+      }
+      .resize-width {
+        width: 100px; /* あるいは希望するサイズに設定 */
+        height: auto;
+        margin-left: 7%;
+      }
+      .resize-width-box {
+        width: 65%; /* あるいは希望するサイズに設定 */
+      }
+      .icon-size {
+        height: 100px;
+        width: 100px;
+      }
+      .icons {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+      img {
+        width: 100%;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/ポイント背景.png' %}')"
+    >
+      <div class="points">0000pt</div>
+      <div class="scrollable-container">
+        {% for item in product_list %}
+        <form
+          method="post"
+          action="{% url 'create-checkout-session' item.id %}"
+        >
+          {% csrf_token %}
+          <div
+            class="message-box"
+            style="
+              --background-url: url('{% static 'image/購入ボックス.png' %}');
+            "
+          >
+            <img
+              width="80%"
+              height="80%"
+              class="rounded-circle resize-width"
+              src="{% static 'image/P.png' %}"
+              alt="avatar_thumbnail"
+              onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+            />
+            <div class="message-content">
+              <div class="item-content">{{item.point}}</div>
+              <div class="item-content">{{item.description}}</div>
+            </div>
+            <div
+              class="fee-box"
+              style="
+                --background-url: url('{% static 'image/購入ボックス.png' %}');
+              "
+            >
+              {% for price_data in item.Prices.all %}
+              <div class="inner-element">
+                {{ price_data.get_display_price }}¥
+              </div>
+              {% endfor %}
+            </div>
           </div>
-
-          <div class="card-footer">
-            <form action="{% url 'create-checkout-session' product.id %}" method="POST">
-              {% csrf_token %}
-              <button class="btn btn-info w-100">購入画面に進む</button>
-            </form>
-          </div>
-        </div>
+        </form>
+        {% endfor %}
       </div>
-    {% endfor %}
-  </div>
-</section>
-<style type="text/css">
-  /* 商品一覧の背景色を指定 */
-.container.container-maxwidth {
-    background-color: #YOUR_COLOR_CODE; /* こちらに適切な色コードを入れてください */
-}
+      {% include '_footer.html' %}
+    </div>
+  </body>
 
-/* 商品のカードに影を追加 */
-.card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: 0.3s;
-}
-
-.card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-</style>
-{% endblock content %}
+  <script>
+    // クリック可能なすべての要素にイベントリスナーを追加
+    document.querySelectorAll(".message-box").forEach(function (element) {
+      element.addEventListener("click", function () {
+        // この要素の親フォームを見つけて送信
+        this.closest("form").submit();
+      });
+    });
+  </script>
+</html>

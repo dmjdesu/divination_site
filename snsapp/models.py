@@ -107,11 +107,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         # divinertypeの各インスタンスの__str__メソッドを呼び出し、
         # 結果をカンマで区切って連結します。
         return ", ".join(str(divinertype.name) for divinertype in self.divinertype.all())
+    
+    @property
+    def profile_data(self):
+        try:
+            # print(self.__dict__)
+            # profile = self.profile
+            profile = Profile.objects.get(userPro=self)
+            return {
+                'nickName': profile.nickName,
+                'created_on': profile.created_on,
+                'img': profile.img.url if profile.img else None,  # imgフィールドが空の場合を考慮
+            }
+        except:
+            return None  # もしくは {} など、関連するProfileが存在しない場合の返り値を定義
 
 class Profile(models.Model):
     nickName = models.CharField(max_length=20)
     userPro = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name='userPro',
+        settings.AUTH_USER_MODEL, related_name='profile',
         on_delete=models.CASCADE
     )
     created_on = models.DateTimeField(auto_now_add=True)

@@ -12,7 +12,7 @@ from .models import Product
 from .models import Price
 from .models import Transaction # 追加
 import datetime   # 追加
-
+from django.contrib.auth import get_user_model
 
 # STRIPEのシークレットキー
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -47,6 +47,9 @@ class CreateCheckoutSessionView(View):
 
         # ドメイン
         YOUR_DOMAIN = "http://127.0.0.1:8000"
+
+        user_id = request.user.id 
+
         # 決済用セッション
         checkout_session = stripe.checkout.Session.create(
             # 決済方法
@@ -61,6 +64,7 @@ class CreateCheckoutSessionView(View):
             # POSTリクエスト時にメタデータ取得
             metadata = {
                         "product_id":product.id,
+                        "user_id": user_id,
                        },
             mode='payment',                               # 決済手段（一括）
             success_url=YOUR_DOMAIN + '/shopping/success/',        # 決済成功時のリダイレクト先
@@ -91,8 +95,28 @@ def stripe_webhook(request):
     # checkout.session.completedイベント検知
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
+        # ユーザー識別のためのIDを取得（Stripeのcustomerから取得または別の方法を使用）
+        user_id = session.get("metadata", {}).get("user_id")
 
-        request.user.points += product.point
+        User = get_user_model
+
+        # ユーザーモデルの取得
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            # ユーザーが存在しない場合の処理
+            return HttpResponse(status=404)
+
+        # 商品情報取得
+        product_id = session["metadata"]["product_id"]
+        product = Product.objects.get(id=product_id)
+
+        print(product.point)
+        print(user.points)
+        # ユーザーのポイントを更新
+        user.points += product.point
+        user.save()
+
 
         # イベント情報取得
         customer_name  = session["customer_details"]["name"]     # 顧客名

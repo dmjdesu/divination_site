@@ -1,35 +1,186 @@
-{% extends 'base.html' %} {% load static %} {% block customcss %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-{% endblock customcss %} {% block content %}
-<div class="container mt-3">
-  <form method="get" action="">
-    {{ form.name }}
-    <button type="submit" class="btn btn-primary">絞り込む</button>
-  </form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <style>
+      body {
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        padding-bottom: 80px; /* footerの高さ分のpaddingを追加 */
+      }
+      .scrollable-container {
+        max-height: 75%; /* この値は必要に応じて調整してください */
+        overflow-y: auto;
+        border: 1px solid #ccc; /* 必要に応じて境界線を追加 */
+        padding: 10px; /* 必要に応じてパディングを追加 */
+      }
+      .truncate-text {
+        width: 150px; /* 必要な幅を指定してください */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+        text-decoration-line: none;
+      }
+      .rounded-circle {
+        border-radius: 50%;
+      }
+      .container {
+        flex: 1;
+        position: relative;
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100%;
+        margin: 0 auto; /* 追加 */
+        flex-grow: 1;
+        width: 100%;
+      }
+      .footer {
+        position: fixed; /* fixedからabsoluteに変更 */
+        bottom: 0;
+        left: 0; /* 追加 */
+        right: 0; /* 追加 */
+        width: 100%; /* 追加 */
+        margin: 0 auto; /* 追加 */
+        padding: 20px 0;
+        background-color: #333;
+      }
+      .points {
+        font-size: 24px;
+      }
+      .message-content {
+        display: flex;
+        flex-direction: column; /* 子要素を縦方向に並べる */
+        justify-content: space-between; /* 上下中央に配置 */
+        height: 100%; /* 全高さを利用 */
+        margin-left: auto; /* 左側の余白を自動で調整 */
+        margin-right: auto; /* 右側の余白を自動で調整 */
+        padding-left: 20px; /* 左側の余白を20pxとる */
+        padding-right: 20px; /* 右側の余白を20pxとる */
+        word-wrap: break-word; /* 文字列を折り返す */
+        overflow-wrap: break-word; /* 文字列を折り返す (新しい名前のプロパティ) */
+      }
 
-  {% for item in object_list %}
-  <div class="alert alert-success" role="alert">
-    <p>
-      ユーザ名
-      <a href="{% url 'diviner_detail' pk=item.pk %}">
-        <img
-          width="100"
-          height="100"
-          class="rounded img-fluid"
-          src="{{ item.img.url }}"
-          alt="avatar_thumbnail"
-          onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
-        />
-      </a>
-      {{item.username}}
-    </p>
-    <p>占いタイプ{{item.divinertype_display}}</p>
-    <form method="post" action="{% url 'follow_diviner' pk=item.pk %}">
-      <!-- このURLはビューのURL名に合わせて変更してください -->
-      {% csrf_token %}
-      <button type="submit" class="btn btn-primary">フォローする</button>
-    </form>
-  </div>
-  {% endfor %}
-</div>
-{% endblock content %}
+      .item-content:first-child {
+        /* 最初の .item-content 要素、つまり username をターゲットにする */
+        align-self: center; /* 自分自身を中央に配置 */
+        margin-top: 10px; /* 任意の余白を上部に追加して位置を調整 (値は調整可能) */
+      }
+
+      .item-content {
+        padding-top: 10px; /* 上の余白 */
+        padding-bottom: 10px; /* 下の余白 */
+        font-family: "リュウミン R-KL";
+        word-wrap: break-word; /* 文字列を折り返す */
+        overflow-wrap: break-word; /* 文字列を折り返す (新しい名前のプロパティ) */
+        white-space: normal; /* テキストを自然に折り返す */
+      }
+
+      .user-section,
+      .message-section {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 20%;
+      }
+
+      .message-section {
+        align-items: center; /* オプション: 項目を垂直に中央揃えにする場合 */
+        width: 100%; /* オプション: 100%の幅を持つことで、項目の間に最大の間隔を確保します */
+      }
+
+      .timestamp {
+        margin-right: 2%;
+      }
+      .message-box {
+        box-sizing: border-box;
+        background-image: var(--background-url);
+        width: 100%;
+        height: 150px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+        background-position: center; /* 画像を中央に配置する */
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .bottom-right-text {
+        position: absolute;
+        bottom: 20px; /* 10pxは例としての値で、必要に応じて変更してください */
+        right: 75px; /* 同上 */
+        /* 必要に応じてその他のスタイルを追加 */
+      }
+      .resize-width {
+        width: 100px; /* あるいは希望するサイズに設定 */
+        height: auto;
+        margin-left: 7%;
+      }
+      .icon-size {
+        height: 100px;
+        width: 100px;
+      }
+      .icons {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+      img {
+        width: 100%;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/占い師一覧背景.png' %}')"
+    >
+      <div class="points">0000pt</div>
+      <div class="scrollable-container">
+        {% for item in object_list %}
+        <a class="truncate-text" href="{% url 'diviner_detail' item.id %}">
+          <div
+            class="message-box"
+            style="
+              --background-url: url('{% static 'image/占い師一覧フレーム.png' %}');
+            "
+          >
+            {% if item.profile.img %}
+            <img
+              width="80%"
+              height="80%"
+              class="rounded-circle resize-width"
+              src="{{ item.profile.img.url }}"
+              alt="avatar_thumbnail"
+              onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+            />
+            {% else %}
+            <img
+              width="80%"
+              height="80%"
+              class="rounded-circle resize-width"
+              src="https://ptetutorials.com/images/user-profile.png"
+              alt="avatar_thumbnail"
+            />
+            {% endif %}
+            <div class="message-content">
+              <div class="item-content">{{item.username}}</div>
+              <div class="item-content">{{item.divinertype_display}}</div>
+            </div>
+            <div class="bottom-right-text">10</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% include '_footer.html' %}
+    </div>
+  </body>
+</html>

@@ -1,231 +1,165 @@
-{% extends 'base.html' %} 
 {% load static %}
- {% block customcss %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-{% endblock customcss %} 
-
-{% block content %}
-<div class="messaging">
-      <div class="inbox_msg">
-        <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-              <h4>Recent</h4>
-            </div>
-            <div class="srch_bar">
-              <div class="stylish-input-group">
-                <input type="text" class="search-bar"  placeholder="Search" >
-                <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                </span> </div>
-            </div>
-          </div>
-          <div class="inbox_chat">
-            {% for following in friends %}
-              <a href="{% url 'get_message' following.username %}">
-             <div class="chat_list active_chat">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>{{following.username}} <span class="chat_date">{{following.latest_message_timestamp}}</span></h5>
-                  <p>{{following.latest_message}}</p>
-                </div>
-              </div>
-            </div>
-              </a>
-            {% endfor %}
-         
-          </div>
-        </div>
-        <div class="mesgs">
-          <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class="time_date"> 11:01 AM    |    June 9</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test, which is a new approach to have</p>
-                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Apollo University, Delhi, India Test</p>
-                <span class="time_date"> 11:01 AM    |    Today</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class="time_date"> 11:01 AM    |    Today</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" />
-              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      <p class="text-center top_spac"> Design by <a target="_blank" href="https://www.linkedin.com/in/sunil-rajput-nattho-singh/">Sunil Rajput</a></p>
-      
-    </div></div>
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
     <style>
-        .container{max-width:1170px; margin:auto;}
-img{ max-width:100%;}
-.inbox_people {
-  background: #f8f8f8 none repeat scroll 0 0;
-  float: left;
-  overflow: hidden;
-  width: 40%; border-right:1px solid #c4c4c4;
-}
-.inbox_msg {
-  border: 1px solid #c4c4c4;
-  clear: both;
-  overflow: hidden;
-}
-.top_spac{ margin: 20px 0 0;}
+      body {
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        padding-bottom: 80px; /* footerの高さ分のpaddingを追加 */
+      }
+      .scrollable-container {
+        max-height: 75%; /* この値は必要に応じて調整してください */
+        overflow-y: auto;
+        border: 1px solid #ccc; /* 必要に応じて境界線を追加 */
+        padding: 10px; /* 必要に応じてパディングを追加 */
+      }
+      .truncate-text {
+        width: 150px; /* 必要な幅を指定してください */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+        text-decoration-line: none;
+      }
+      .rounded-circle {
+        border-radius: 50%;
+      }
+      .container {
+        flex: 1;
+        padding: 30px 10px;
+        position: relative;
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100%;
+        margin: 0 auto; /* 追加 */
+        flex-grow: 1;
+        width: 100%;
+      }
+      .footer {
+        position: absolute; /* fixedからabsoluteに変更 */
+        bottom: 0;
+        left: 0; /* 追加 */
+        right: 0; /* 追加 */
+        width: 100%; /* 追加 */
+        margin: 0 auto; /* 追加 */
+        padding: 20px 0;
+        background-color: #333;
+      }
+      .points {
+        font-size: 24px;
+      }
+      .message-content {
+        display: flex;
+        flex-direction: column; /* 子要素を縦方向に並べる */
+        justify-content: space-between; /* 上下中央に配置 */
+        height: 100%; /* 全高さを利用 */
+        margin-left: 20%;
+      }
 
+      .item-content {
+        padding-top: 10px; /* 上の余白 */
+        padding-bottom: 10px; /* 下の余白 */
+        font-family: "リュウミン R-KL";
+      }
 
-.recent_heading {float: left; width:40%;}
-.srch_bar {
-  display: inline-block;
-  text-align: right;
-  width: 60%;
-}
-.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+      .user-section,
+      .message-section {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 20%;
+      }
 
-.recent_heading h4 {
-  color: #05728f;
-  font-size: 21px;
-  margin: auto;
-}
-.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
-.srch_bar .input-group-addon button {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  padding: 0;
-  color: #707070;
-  font-size: 18px;
-}
-.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+      .message-section {
+        align-items: center; /* オプション: 項目を垂直に中央揃えにする場合 */
+        width: 100%; /* オプション: 100%の幅を持つことで、項目の間に最大の間隔を確保します */
+      }
 
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
-
-.chat_people{ overflow:hidden; clear:both;}
-.chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
-  padding: 18px 16px 10px;
-}
-.inbox_chat { height: 550px; overflow-y: scroll;}
-
-.active_chat{ background:#ebebeb;}
-
-.incoming_msg_img {
-  display: inline-block;
-  width: 6%;
-}
-.received_msg {
-  display: inline-block;
-  padding: 0 0 0 10px;
-  vertical-align: top;
-  width: 92%;
- }
- .received_withd_msg p {
-  background: #ebebeb none repeat scroll 0 0;
-  border-radius: 3px;
-  color: #646464;
-  font-size: 14px;
-  margin: 0;
-  padding: 5px 10px 5px 12px;
-  width: 100%;
-}
-.time_date {
-  color: #747474;
-  display: block;
-  font-size: 12px;
-  margin: 8px 0 0;
-}
-.received_withd_msg { width: 57%;}
-.mesgs {
-  float: left;
-  padding: 30px 15px 0 25px;
-  width: 60%;
-}
-
- .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 0; color:#fff;
-  padding: 5px 10px 5px 12px;
-  width:100%;
-}
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
-.sent_msg {
-  float: right;
-  width: 46%;
-}
-.input_msg_write input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  color: #4c4c4c;
-  font-size: 15px;
-  min-height: 48px;
-  width: 100%;
-}
-
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
-.msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
-  border: medium none;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  font-size: 17px;
-  height: 33px;
-  position: absolute;
-  right: 0;
-  top: 11px;
-  width: 33px;
-}
-.messaging { padding: 0 0 50px 0;}
-.msg_history {
-  height: 516px;
-  overflow-y: auto;
-}
+      .timestamp {
+        margin-right: 2%;
+      }
+      .message-box {
+        box-sizing: border-box;
+        background-image: var(--background-url);
+        width: 100%;
+        height: 150px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+        background-position: center; /* 画像を中央に配置する */
+        display: flex;
+        align-items: center;
+      }
+      .resize-width {
+        width: 100px; /* あるいは希望するサイズに設定 */
+        height: auto;
+        margin-left: 2%;
+      }
+      .icon-size {
+        height: 100px;
+        width: 100px;
+      }
+      .icons {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+      img {
+        width: 100%;
+        max-width: 800px;
+      }
     </style>
-{% endblock %}
+  </head>
+  <body>
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/チャット背景.png' %}')"
+    >
+      <div class="points">0000pt</div>
+      <div class="scrollable-container">
+        {% for following in friends %}
+        <a
+          class="truncate-text"
+          href="{% url 'get_message' following.username %}"
+        >
+          <div
+            class="message-box"
+            style="
+              --background-url: url('{% static 'image/チャットフレーム.png' %}');
+            "
+          >
+            <img
+              width="80%"
+              height="80%"
+              class="rounded-circle resize-width"
+              src="{{ following.profile.img.url }}"
+              alt="avatar_thumbnail"
+              onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+            />
+            <div class="message-content">
+              <div class="item-content">{{following.username}}</div>
+              <div class="item-content">{{following.latest_message}}</div>
+              {% if following.latest_message_timestamp != "未送信" %}
+              <div class="item-content timestamp">
+                {{ following.latest_message_timestamp|slice:":10" }}
+              </div>
+              {% else %}
+              <div class="item-content timestamp">未送信</div>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% include '_footer.html' %}
+    </div>
+  </body>
+</html>

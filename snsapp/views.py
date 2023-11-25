@@ -35,6 +35,11 @@ class Home(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         #get_or_createにしないとサインアップ時オブジェクトがないためエラーになる
         context['connection'] = Connection.objects.get_or_create(user=self.request.user)
+
+        current_user = self.request.user
+        context['chat_messages'] =  Messages.objects.filter(
+                (Q(sender_name=current_user.id) | Q(receiver_name=current_user.id))
+            )
         return context
     
     
@@ -92,6 +97,8 @@ def deduct_points(user, action_label):
         return {"error": "ポイントの指定が間違っています。"}
 
     # ユーザーのポイントが十分であることを確認
+    print(user.username)
+    print("user.username")
     if user.points < cost.point:
         return {"error": "ポイントが足りません。"}
 
@@ -121,10 +128,17 @@ class DivinerDetail(DetailView, ProcessFormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['message_form'] = SendMessageForm()
+        context['diviner'] = self.get_object() 
+        if context['diviner'].profile_data is not None and 'img' in context['diviner'].profile_data:
+            context['image_url'] = context['diviner'].profile_data["img"]
+        else:
+            context['image_url'] = None
         return context
 
     def post(self, request, *args, **kwargs):
         form = SendMessageForm(request.POST)
+        print(form.is_valid())
+        print("form.is_valid()")
         if form.is_valid():
             pk = self.kwargs.get("pk")
             user = get_object_or_404(get_user_model(), id=pk)
@@ -156,7 +170,7 @@ class DivinerDetail(DetailView, ProcessFormView):
                 receiver_name=receiver
             )
             message.save()
-            
+
             # 成功メッセージをユーザーに表示
             messages.success(request, 'メッセージを送信しました。')
             return HttpResponseRedirect(reverse('get_message', args=[user.username]))
@@ -251,6 +265,9 @@ class SearchUser(LoginRequiredMixin, View):
         user_list = list(user_list)
 
         friends = getFriendsList(self)
+
+        print("friends")
+        print(friends)
        
         return render(request, "search.html", {'users': user_list, 'friends': friends})
 

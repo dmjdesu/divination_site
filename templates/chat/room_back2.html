@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <style>
+      body {
+        color: #fff;
+        font-family: "Arial", sans-serif;
+      }
+      .container {
+        padding: 30px 10px;
+        position: relative;
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100%;
+        max-width: 600px; /* 追加 */
+        margin: 0 auto; /* 追加 */
+      }
+      .points {
+        font-size: 24px;
+      }
+      .message-box {
+        border: 1px solid #fff;
+        padding: 10px;
+        margin: 20px 0;
+        width: 50%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .icons {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+      img {
+        width: 100%;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/背景.png' %}')"
+    >
+      <div class="points">0000pt</div>
+      <img src="path-to-your-image.jpg" alt="星空の画像" />
+      <div class="message-box">
+        <div>メッセージアイコン</div>
+        <div>名前</div>
+        <div>aaaaaaaaaaaaaaaaaaaa</div>
+        <div>12:00</div>
+      </div>
+      <div class="message-box">
+        <div>メッセージアイコン</div>
+        <div>名前</div>
+        <div>aaaaaaaaaaaaaaaaaaaa</div>
+        <div>12:00</div>
+      </div>
+      <div class="icons">
+        <div>ホームアイコン</div>
+        <div>チャットアイコン</div>
+        <div>情報アイコン</div>
+        <div>設定アイコン</div>
+      </div>
+    </div>
+  </body>
+</html>

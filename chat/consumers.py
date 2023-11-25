@@ -1,8 +1,10 @@
 import json
  
 from channels.generic.websocket import AsyncWebsocketConsumer
- 
- 
+from snsapp.models import Messages, User
+from channels.db import database_sync_to_async
+from django.contrib.auth import get_user_model
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -20,16 +22,41 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        message = text_data_json['message']
+        sender = text_data_json['sender']
+        receiver = text_data_json['receiver']
  
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat_message", "message": message}
+            self.room_group_name,  {
+            'type': 'chat_message',
+            'message': message,
+            'sender': sender,
+            'receiver': receiver
+        }
         )
  
-    # Receive message from room group
+
+        # WebSocketに対応したメッセージの送信処理
     async def chat_message(self, event):
-        message = event["message"]
- 
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message}))
+        print(event)
+        message = event['message']
+        sender_name = event['sender']
+        receiver_name = event['receiver']
+
+        # メッセージオブジェクトを作成し、保存します
+        sender = await database_sync_to_async(User.objects.get)(username=sender_name)
+        receiver = await database_sync_to_async(User.objects.get)(username=receiver_name)
+        message_object = Messages(
+            description=message,
+            sender_name=sender,
+            receiver_name=receiver
+        )
+        await database_sync_to_async(message_object.save)()
+
+        # WebSocketを通じてメッセージを送信
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'sender': sender.username,  # senderはUserモデルのインスタンスと仮定
+            'receiver': receiver.username  # receiverもUserモデルのインスタンスと仮定
+        }))

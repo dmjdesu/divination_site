@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% load static %} {% block customcss %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock customcss %} {% block content %}
+<div class="container mt-3">
+  <form method="get" action="">
+    {{ form.name }}
+    <button type="submit" class="btn btn-primary">絞り込む</button>
+  </form>
+
+  {% for item in object_list %}
+  <div class="alert alert-success" role="alert">
+    <p>
+      ユーザ名
+      <a href="{% url 'diviner_detail' pk=item.pk %}">
+        <img
+          width="100"
+          height="100"
+          class="rounded img-fluid"
+          src="{{ item.profile.img.url }}"
+          alt="avatar_thumbnail"
+          onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+        />
+      </a>
+      {{item.username}}
+    </p>
+    <p>占いタイプ{{item.divinertype_display}}</p>
+    <form method="post" action="{% url 'follow_diviner' pk=item.pk %}">
+      <!-- このURLはビューのURL名に合わせて変更してください -->
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">フォローする</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

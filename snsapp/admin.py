@@ -4,7 +4,7 @@ from shopping.models import *
 
 # Register your models here.
 class ProfileAdmin(admin.ModelAdmin):
-    list_display=('img','nickName')
+    list_display=('img','nickName','userPro')
 
 class MessagesAdmin(admin.ModelAdmin):
     list_display=('pk','description','sender_name', 'receiver_name','time', 'seen', 'timestamp')
