@@ -90,10 +90,6 @@ class Message(LoginRequiredMixin, View):
         else:
             current_user_img = None
         print("chat_messages")
-        print(model_to_dict(chat_messages[0]))
-        print(current_user.id)
-        print("current_user.id")
-        print(current_user.id == model_to_dict(chat_messages[0])["receiver_name"])
         return render(request, "chat/room.html",
                         {'chat_messages': chat_messages,
                         'friend_img': friend_img,

@@ -113,11 +113,13 @@
         position: fixed; /* 固定位置 */
         bottom: 0; /* 画面の最下部に配置 */
         left: 0; /* 左端から開始 */
-        height: 15%; /* 高さを指定 */
+        height: 20px; /* 高さを指定 */
         width: 100%; /* 画面幅に合わせて調整 */
-        background-color: #fff; /* 背景色（必要に応じて変更） */
+        background-color: #000; /* 背景色（必要に応じて変更） */
         padding: 10px; /* パディング */
         box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* 影を追加（オプショナル） */
+        display: flex;
+        justify-content: center;
       }
     </style>
   </head>
@@ -188,11 +190,18 @@
     </div>
     <div class="chat-input-container">
       <input id="chat-message-input" type="text" size="100" /><br />
-      <input id="chat-message-submit" type="button" value="Send" />
+       <img
+            class="submit-button"
+            width="30"
+            height="30"
+            src="{% static 'image/送信.png' %}"
+            alt="送信"
+            onclick="submitForm()"
+          />
     </div>
-    {{ room_name|json_script:"room-name" }} {{
-    current_user_name|json_script:"current-user" }} {{
-    friend_name|json_script:"friend" }}
+    {{ room_name|json_script:"room-name" }} 
+    {{current_user_name|json_script:"current-user" }} 
+    {{friend_name|json_script:"friend" }}
     <script>
       const roomName = JSON.parse(
         document.getElementById("room-name").textContent

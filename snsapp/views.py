@@ -83,6 +83,7 @@ class MyDiviner(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = DivinerTypeForm(self.request.GET or None)
+        context["point"] = self.request.user.points
         return context
 
 
@@ -190,7 +191,7 @@ class DivinerDetail(DetailView, ProcessFormView):
 
             # 成功メッセージをユーザーに表示
             messages.success(request, 'メッセージを送信しました。')
-            return HttpResponseRedirect(reverse('get_message', args=[user.username]))
+            return HttpResponseRedirect(reverse('room', args=[user.username]))
         return self.get(request, *args, **kwargs)
 
 @login_required
@@ -271,7 +272,7 @@ def getFriendsList(self):
             return []
 
 class SearchUser(LoginRequiredMixin, View):
-    
+
     def get(self, request, *args, **kwargs):
         if 'search' in request.GET:
             query = request.GET.get("search")
@@ -286,7 +287,7 @@ class SearchUser(LoginRequiredMixin, View):
         print("friends")
         print(friends)
        
-        return render(request, "search.html", {'users': user_list, 'friends': friends})
+        return render(request, "search.html", {'users': user_list, 'friends': friends,'point':self.request.user.points})
 
 class Message(LoginRequiredMixin, View):
     
@@ -383,6 +384,8 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         context['email'] = profile.userPro.email
         context['message_count'] = Messages.objects.filter(sender_name=self.request.user).count()
         context["product_list"] = Product.objects.all()
+
+        context["point"] = self.request.user.points
 
         context["account_settings_value"] = self.get_config_value('account_settings')
         context["help_value"] = self.get_config_value('help')

@@ -53,9 +53,6 @@
         padding: 20px 0;
         background-color: #333;
       }
-      .points {
-        font-size: 24px;
-      }
       .message-content {
         display: flex;
         flex-direction: column; /* 子要素を縦方向に並べる */
@@ -114,6 +111,27 @@
         width: 100%;
         max-width: 800px;
       }
+      .points {
+        font-size: 24px; /* フォントサイズ */
+        background-color: #444; /* 背景色 */
+        padding: 10px; /* パディング */
+      }
+      .truncate-text {
+        width: 150px; /* 必要な幅を指定してください */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+        text-decoration-line: none;
+      }
+      .header {
+        color: #fff; /* テキスト色 */
+        padding: 20px; /* パディング */
+        display: flex; /* フレックスボックス */
+        justify-content: flex-end; /* コンテナ内の要素を水平方向に中央揃えに */
+        align-items: center; /* コンテナ内の要素を垂直方向に中央揃えに */
+        text-align: center; /* テキストを中央揃えに */
+      }
     </style>
   </head>
   <body>
@@ -121,7 +139,14 @@
       class="container"
       style="--background-url: url('{% static 'image/チャット背景.png' %}')"
     >
-      <div class="points">0000pt</div>
+      <div
+        class="header"
+        style="--background-url: url('{% static 'image/チャット.png' %}')"
+      >
+        <a class="truncate-text" href="{% url 'product-top-page' %}">
+          <div class="points">{{point}}pt</div>
+        </a>
+      </div>
       <div class="scrollable-container">
         {% for following in friends %}
         <a
