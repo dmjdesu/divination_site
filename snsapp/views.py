@@ -60,7 +60,7 @@ class Home(LoginRequiredMixin, ListView):
         return context
     
     
-class MyDiviner(ListView):
+class MyDiviner(LoginRequiredMixin,ListView):
     """占い師一覧を表示"""
     model = User
     template_name = 'diviner_list.html'
@@ -139,7 +139,7 @@ class FollowDetail(FollowBase):
         pk = self.kwargs['pk'] 
         return redirect('detail', pk)
     
-class DivinerDetail(DetailView, ProcessFormView):
+class DivinerDetail(LoginRequiredMixin,DetailView, ProcessFormView):
     model = get_user_model()
     template_name = 'diviner_detail.html'
 
