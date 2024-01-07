@@ -3,8 +3,8 @@
 # 他の無視するファイル/ディレクトリ
 
 # config/settings.py を無視
-config/settings.py
-db.sqlite3
+./config/settings.py
+./db.sqlite3
 
 # Python のコンパイル済みキャッシュファイル
 **/__pycache__/
