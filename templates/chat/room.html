@@ -1,26 +1,202 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Chat Room</title>
+    <meta charset="UTF-8" />
+    <title>Decorated Boxes with Aligned Badges</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-image: var(--background-url);
+        background-size: cover;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .custom-icon-right {
+        position: absolute;
+        z-index: 10; /* これが2つの背景の上に来るように設定 */
+        top: -70%; /* アイコンの上端を親要素の中央に配置 */
+        left: 95%; /* アイコンの左端を親要素の中央に配置 */
+        transform: translate(-50%, 0%); /* アイコン自体を中央に移動 */
+        width: 100px; /* アイコンのサイズ指定 */
+        border-radius: 50%;
+      }
+
+      .custom-icon-left {
+        position: absolute;
+        z-index: 10; /* これが2つの背景の上に来るように設定 */
+        top: -70%; /* アイコンの上端を親要素の中央に配置 */
+        right: 85%; /* アイコンの左端を親要素の中央に配置 */
+        transform: translate(-50%, 0%); /* アイコン自体を中央に移動 */
+        width: 100px; /* アイコンのサイズ指定 */
+        border-radius: 50%;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto; /* コンテンツの高さに合わせて調整 */
+        margin-bottom: 0; /* 以前の余分な余白を削除 */
+        padding-bottom: 200px; /* テキスト送信部分の高さに合わせて設定 */
+        padding-top: 40px; /* 画面の高さに合わせて設定 */
+      }
+
+      .box {
+        background-image: var(--background-url);
+        background-color: black;
+        width: 60%;
+        height: 100px;
+        margin: 20px;
+        position: relative;
+        flex-shrink: 0;
+        background-size: 100% 100%; /* 画像が枠を覆うように調整 */
+        background-position: center; /* 画像を中央に配置 */
+        background-repeat: no-repeat; /* 画像が繰り返されないように設定 */
+      }
+
+      .box-left {
+        align-self: flex-start;
+        margin-right: auto; /* Adds space on the right */
+      }
+
+      .box-right {
+        align-self: flex-end;
+        margin-left: auto; /* Adds space on the left */
+      }
+
+      .badge {
+        position: absolute;
+        width: 10px; /* Increased size of the badge */
+        height: 10px; /* Increased size of the badge */
+        background-image: var(--background-url);
+        background-size: 20%;
+        border: 2px solid gold;
+        border-radius: 50%;
+      }
+
+      .badge-left {
+        top: -50px;
+        left: -50px;
+      }
+
+      .badge-right {
+        top: -50px;
+        right: -50px;
+      }
+
+      .text {
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .sendertext-right {
+        text-align: left;
+        padding: 10px;
+        padding-right: 100px;
+        overflow-wrap: break-word;
+      }
+      .sendertext-left {
+        text-align: left;
+        padding: 10px;
+        padding-left: 100px;
+        overflow-wrap: break-word;
+      }
+      .chat-input-container {
+        position: fixed; /* 固定位置 */
+        bottom: 0; /* 画面の最下部に配置 */
+        left: 0; /* 左端から開始 */
+        height: 15%; /* 高さを指定 */
+        width: 100%; /* 画面幅に合わせて調整 */
+        background-color: #fff; /* 背景色（必要に応じて変更） */
+        padding: 10px; /* パディング */
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* 影を追加（オプショナル） */
+      }
+    </style>
   </head>
-  <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br />
-    <input id="chat-message-input" type="text" size="100" /><br />
-    <input id="chat-message-submit" type="button" value="Send" />
-    {{ room_name|json_script:"room-name" }}
-    {{ current_user_name|json_script:"current-user" }}
-    {{ friend_name|json_script:"friend" }}
+  <body style="--background-url: url('{% static 'image/チャット背景.png' %}')">
+    <div
+      class="container"
+    >
+      {% for m in chat_messages %}
+      {% if m.sender_id == current_user_id  %}
+      <div
+        class="box box-right"
+        style="
+          --background-url: url('{% static 'image/テキストボックス.png' %}');
+        "
+      >
+        {% if current_user_img %}
+        <div
+          class="badge badge-right"
+          style="--background-url: url('{{current_user_img}}')"
+        ></div>
+        <img
+          width="100px"
+          src="{{ current_user_img }}"
+          alt="カスタムアイコンの説明"
+          class="custom-icon-right"
+        />
+        {% else %}
+        <img
+          width="100px"
+          src="https://ptetutorials.com/images/user-profile.png"
+          alt="カスタムアイコンの説明"
+          class="custom-icon-right"
+        />
+        {% endif %}
+        <div class="sendertext-left">{{m.description}}</div>
+      </div>
+
+      {% else %}
+      <div
+        class="box box-left"
+        style="
+          --background-url: url('{% static 'image/テキストボックス.png' %}');
+        "
+      >
+        {% if current_user_img %}
+        <div
+          class="badge badge-left"
+          style="--background-url: url('{{current_user_img}}')"
+        ></div>
+        <img
+          width="100px"
+          src="{{ current_user_img }}"
+          alt="カスタムアイコンの説明"
+          class="custom-icon-left"
+        />
+        {% else %}
+        <img
+          width="100px"
+          src="https://ptetutorials.com/images/user-profile.png"
+          alt="カスタムアイコンの説明"
+          class="custom-icon-left"
+        />
+        {% endif %}
+        <div class="sendertext-left">{{m.description}}</div>
+      </div>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+    <div class="chat-input-container">
+      <input id="chat-message-input" type="text" size="100" /><br />
+      <input id="chat-message-submit" type="button" value="Send" />
+    </div>
+    {{ room_name|json_script:"room-name" }} {{
+    current_user_name|json_script:"current-user" }} {{
+    friend_name|json_script:"friend" }}
     <script>
       const roomName = JSON.parse(
         document.getElementById("room-name").textContent
       );
-
-      const currentUser = JSON.parse(
-        document.getElementById("current-user").textContent
-      );
-
-      const friend = JSON.parse(document.getElementById("friend").textContent);
 
       const chatSocket = new WebSocket(
         "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
@@ -29,7 +205,7 @@
       chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         console.log(data);
-        document.querySelector("#chat-log").value += data.message + "\n";
+        addMessageToContainer(data.message, true, "{{current_user_img}}");
       };
 
       chatSocket.onclose = function (e) {
@@ -50,11 +226,51 @@
         chatSocket.send(
           JSON.stringify({
             message: message,
-            sender: currentUser,
-            receiver: friend,
+            sender: "{{current_user_name}}",
+            receiver: "{{friend_name}}",
           })
         );
         messageInputDom.value = "";
+      };
+      function addMessageToContainer(description, isCurrentUser, userImgUrl) {
+        // コンテナ要素を取得
+        const container = document.querySelector(".container");
+
+        // 新しいメッセージボックスを作成
+        const messageBox = document.createElement("div");
+        messageBox.classList.add("box");
+        messageBox.classList.add(isCurrentUser ? "box-right" : "box-left");
+        messageBox.style.setProperty(
+          "--background-url",
+          "url('{% static 'image/テキストボックス.png' %}')"
+        );
+
+        // ユーザー画像要素を作成
+        const img = document.createElement("img");
+        img.width = 100;
+        img.src =
+          userImgUrl == "None"
+            ? "https://ptetutorials.com/images/user-profile.png"
+            : userImgUrl;
+        img.alt = "カスタムアイコンの説明";
+        img.className = "custom-icon-right";
+        messageBox.appendChild(img);
+
+        // メッセージテキスト要素を作成
+        const messageText = document.createElement("div");
+        messageText.className = "sendertext-right";
+        messageText.textContent = description;
+        messageBox.appendChild(messageText);
+
+        // コンテナに新しいメッセージボックスを追加
+        container.appendChild(messageBox);
+      }
+
+      window.onload = function () {
+        // すべてのリソースがロードされた後でスクロールするための遅延
+        setTimeout(function () {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 500); // 500ミリ秒後にスクロール
       };
     </script>
   </body>

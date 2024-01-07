@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
+
+from snsapp.models import Config
 from .models import Product
 from .models import Price
 from .models import Transaction # 追加
@@ -35,6 +37,20 @@ class ProductTopPageView(ListView):
     template_name = "shopping/product-top.html"
     #レコード情報をテンプレートに渡すオブジェクト
     context_object_name = "product_list"
+
+    def get_config_value(self,key):
+        try:
+            config = Config.objects.get(key=key)
+            return config.value
+        except Config.DoesNotExist:
+            return None
+
+     # テンプレート内で呼び出せる、コンテキストをセットする。
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["pricing_about"] = self.get_config_value('pricing_about')
+        context["asset_settlement_law"] = self.get_config_value('asset_settlement_law')
+        return context
 
 
 # 決済画面

@@ -1,0 +1,53 @@
+{% extends "account/base.html" %} {% load django_bootstrap5 %} {% load i18n %}
+{% load account socialaccount %} {% block content %}
+{% load static %}
+<h1 class="h3 mb-3 font-weight-normal">新規ユーザー登録</h1>
+<link rel="stylesheet" href="{% static 'django_select2/django_select2.css' %}">
+<script src="{% static 'django_select2/django_select2.js' %}"></script>
+<form
+  class="form-signin"
+  id="signup_form"
+  method="post"
+  action="{% url 'account_signup' %}"
+>
+  {% csrf_token %} {% bootstrap_form form %}<!-- Bootstrapを適用したフォーム -->
+  {% if redirect_field_value %}
+  <input
+    type="hidden"
+    name="{{ redirect_field_name }}"
+    value="{{ redirect_field_value }}"
+  />
+  {% endif %}
+  <button type="submit" class="btn btn-lg btn-primary btn-block">
+    新規登録
+  </button>
+</form>
+
+<script>
+  function toggleDivinerTypeVisibility() {
+    const userTypeSelect = document.getElementById("id_usertype");
+    const divinerTypeElement = document.getElementById("id_divinertype");
+    console.log(divinerTypeElement)
+    if (divinerTypeElement) {
+      divinerTypeElement.style.display  = userTypeSelect.value === "占い師" ? "block" : "none";
+    } else {
+        console.error('No element found with id id_divinertype');
+    }
+  }
+
+  // ページ読み込み時にusertypeの選択に応じてdivinertypeの表示・非表示を設定
+  window.onload = toggleDivinerTypeVisibility;
+
+  // usertypeの選択が変更された際にもdivinertypeの表示・非表示を切り替える
+  document
+    .getElementById("id_usertype")
+    .addEventListener("change", toggleDivinerTypeVisibility);
+</script>
+
+
+<style>
+  .container-maxwidth {
+    margin-top: 70px; /* navbarの高さに応じて調整 */
+  }
+</style>
+{% endblock %}

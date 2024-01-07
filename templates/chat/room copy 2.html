@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Decorated Boxes with Aligned Badges</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-image: var(--background-url);
+        background-size: cover;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .custom-icon {
+        position: absolute;
+        z-index: 10; /* これが2つの背景の上に来るように設定 */
+        top: -70%; /* アイコンの上端を親要素の中央に配置 */
+        left: 95%; /* アイコンの左端を親要素の中央に配置 */
+        transform: translate(-50%, 0%); /* アイコン自体を中央に移動 */
+        width: 100px; /* アイコンのサイズ指定 */
+        border-radius: 50%;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        background-image: var(--background-url);
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+
+      .box {
+        background-image: var(--background-url);
+        background-color: black;
+        width: 60%;
+        height: 100px;
+        margin: 20px;
+        position: relative;
+        flex-shrink: 0;
+        background-size: 100% 100%; /* 画像が枠を覆うように調整 */
+        background-position: center; /* 画像を中央に配置 */
+        background-repeat: no-repeat; /* 画像が繰り返されないように設定 */
+      }
+
+      .box-left {
+        align-self: flex-start;
+        margin-right: auto; /* Adds space on the right */
+      }
+
+      .box-right {
+        align-self: flex-end;
+        margin-left: auto; /* Adds space on the left */
+      }
+
+      .badge {
+        position: absolute;
+        width: 10px; /* Increased size of the badge */
+        height: 10px; /* Increased size of the badge */
+        background-image: var(--background-url);
+        background-size: 20%;
+        border: 2px solid gold;
+        border-radius: 50%;
+      }
+
+      .badge-left {
+        top: -50px;
+        left: -50px;
+      }
+
+      .badge-right {
+        top: -50px;
+        right: -50px;
+      }
+
+      .text {
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .sendertext {
+        text-align:left;
+        padding: 10px;
+        padding-right: 100px;
+        overflow-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body style="--background-url: url('{% static 'image/チャット背景.png' %}')">
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/チャット背景.png' %}')"
+    >
+      {% for m in chat_messages %} 
+      {% if m.sender == current_user %}
+      <div class="box box-right" style="--background-url: url('{% static 'image/テキストボックス.png' %}')">
+        {% if current_user_img %}
+        <div class="badge badge-right" style="--background-url: url('{{current_user_img}}')"></div>
+        <img
+            width="100px"
+            src="{{ current_user_img }}"
+            alt="カスタムアイコンの説明"
+            class="custom-icon"
+          />
+        {% else %}
+        <img
+            width="100px"
+            src="https://ptetutorials.com/images/user-profile.png"
+            alt="カスタムアイコンの説明"
+            class="custom-icon"
+          />
+          {% endif %}
+          <div class="sendertext">{{m.description}}</div>
+      </div>
+      
+      {% else %}
+      <div class="box box-left">
+        <div class="badge badge-left"></div>
+        <div class="text">{{m.description}}</div>
+      {% endif %} 
+      {% endfor %}
+    </div>
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br />
+    <input id="chat-message-input" type="text" size="100" /><br />
+    <input id="chat-message-submit" type="button" value="Send" />
+    {{ room_name|json_script:"room-name" }} 
+    {{ current_user_name|json_script:"current-user" }} 
+    {{ friend_name|json_script:"friend" }}
+    <script>
+      const roomName = JSON.parse(
+        document.getElementById("room-name").textContent
+      );
+
+      const currentUser = JSON.parse(
+        document.getElementById("current-user").textContent
+      );
+
+      const friend = JSON.parse(document.getElementById("friend").textContent);
+
+      const chatSocket = new WebSocket(
+        "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
+      );
+
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+        document.querySelector("#chat-log").value += data.message + "\n";
+      };
+
+      chatSocket.onclose = function (e) {
+        console.error("Chat socket closed unexpectedly");
+      };
+
+      document.querySelector("#chat-message-input").focus();
+      document.querySelector("#chat-message-input").onkeyup = function (e) {
+        if (e.keyCode === 13) {
+          // enter, return
+          document.querySelector("#chat-message-submit").click();
+        }
+      };
+
+      document.querySelector("#chat-message-submit").onclick = function (e) {
+        const messageInputDom = document.querySelector("#chat-message-input");
+        const message = messageInputDom.value;
+        chatSocket.send(
+          JSON.stringify({
+            message: message,
+            sender: currentUser,
+            receiver: friend,
+          })
+        );
+        messageInputDom.value = "";
+      };
+    </script>
+  </body>
+</html>

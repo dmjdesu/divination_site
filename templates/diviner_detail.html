@@ -29,8 +29,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        min-height: 100%;
-        max-width: 600px; /* 追加 */
+        min-height: 100vh;
         margin: 0 auto; /* 追加 */
       }
 
@@ -49,7 +48,6 @@
       .header {
         text-align: center;
         font-size: 1.5em;
-        background-image: var(--background-url);
         padding: 50px 0;
         background-size: cover;
         position: relative;
@@ -82,8 +80,12 @@
 
       .section {
         border: 15px solid transparent;
-        margin: 10px 0;
-        padding: 10px;
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 10%; /* 上側のマージンを設定 */
+        margin-left: 20px; /* 左側のマージンを設定 */
+        margin-right: 0; /* 右側のマージンは変更なし */
+        margin-bottom: 10px; /* 下側のマージンは既存の設定を維持 */
         font-size: 1.3em;
         text-align: center;
         border-image: url("waku.png") 30 round;
@@ -93,7 +95,7 @@
       .section.special-background {
         height: 200px;
         background-image: var(--background-url);
-        background-size: cover; /* 画像をセクション全体にフィットさせる */
+        background-size: 60% auto;
         background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
         background-position: center; /* 画像を中央に配置する */
         color: white; /* 文字色を白に設定 */
@@ -105,6 +107,14 @@
         align-items: center;
         gap: 15px;
         margin-top: 15px;
+        position: fixed; /* 位置を固定 */
+        bottom: 0; /* 画面の一番下に配置 */
+        width: 100%; /* 幅を画面いっぱいに広げる */
+        padding: 10px 0; /* 上下のパディングを設定 */
+        position: fixed; /* 位置を固定 */
+        left: 50%; /* 画面の左右中央に配置 */
+        transform: translateX(-50%); /* X軸方向に中心を合わせる */
+        bottom: 10px; /* 画面下からの距離 */
       }
 
       .footer-icons img {
@@ -122,6 +132,14 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         z-index: 1000; /* Ensure modal appears on top */
+      }
+
+      .submit-button-container {
+        text-align: right;
+      }
+
+      .submit-button {
+        cursor: pointer;
       }
 
       .modal-content {
@@ -154,21 +172,24 @@
       <div class="modal-content">
         <span class="close">&times;</span>
         <!-- モーダルのヘッダー部分を追加 -->
-        <div style="background-color: #ddd; padding: 10px; font-size: 20px">
-          メッセージヘッダー
+        <div style="color: #000; padding: 10px; font-size: 20px">
+          メッセージ
         </div>
         <p>メッセージを送信</p>
-        <form method="post" action="">
+        <form id="myForm" method="post" action="">
           {% csrf_token %}
           <!-- テキスト入力のサイズを変更 -->
           {{ message_form.as_p }}
-          <button
-            type="submit"
-            class="btn btn-primary"
-            style="margin-top: 10px"
-          >
-            Send
-          </button>
+          <div class="submit-button-container">
+            <img
+              class="submit-button"
+              width="100"
+              height="100"
+              src="{% static 'image/送信.png' %}"
+              alt="送信"
+              onclick="submitForm()"
+            />
+          </div>
         </form>
       </div>
     </div>
@@ -183,10 +204,7 @@
           onclick="history.back()"
         />
       </a>
-      <div
-        class="header"
-        style="--background-url: url('{% static 'image/夕焼け.jpeg' %}')"
-      >
+      <div class="header">
         <div class="icon-container">
           {% if image_url %}
           <img
@@ -219,20 +237,9 @@
         <div
           class="section special-background"
           style="--background-url: url('{% static 'image/占い.png' %}')"
-        ></div>
-        <div
-          class="section special-background"
-          style="
-            --background-url: url('{% static 'image/メッセージフレーム.png' %}');
-          "
-        ></div>
-        <div
-          class="section special-background"
-          style="
-            --background-url: url('{% static 'image/お客様の声フレーム.png' %}');
-          "
-        ></div>
-
+        >
+          {{divinertype_display}}
+        </div>
         <div class="footer-icons">
           <img src="{% static 'image/今すぐチャット.png' %}" alt="メッセージ" />
         </div>
@@ -263,5 +270,10 @@
         }
       };
     });
+  </script>
+  <script>
+    function submitForm() {
+      document.getElementById("myForm").submit();
+    }
   </script>
 </html>

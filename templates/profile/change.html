@@ -14,6 +14,7 @@
         height: 100vh;
         margin: 0;
         padding-bottom: 100px; /* footerの高さ分のpaddingを追加 */
+        background-image: var(--background-url);
       }
       .scrollable-container {
         max-height: 75%; /* この値は必要に応じて調整してください */
@@ -28,6 +29,7 @@
         text-overflow: ellipsis;
         color: white;
         text-decoration-line: none;
+        padding-left: 20%;
       }
       .rounded-circle {
         border-radius: 50%;
@@ -35,7 +37,6 @@
       .container {
         flex: 1;
         position: relative;
-        background-image: var(--background-url);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -69,7 +70,55 @@
         word-wrap: break-word; /* 文字列を折り返す */
         overflow-wrap: break-word; /* 文字列を折り返す (新しい名前のプロパティ) */
       }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
 
+      .modal-content {
+        display: flex; /* フレックスボックスとして設定 */
+        flex-direction: column; /* 子要素を縦方向に配置 */
+        justify-content: space-between; /* ヘッダー、ボディ、フッターを均等に配置 */
+        position: relative;
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 50%;
+        height: auto; /* コンテンツの高さに合わせて自動調整 */
+        max-height: 60%; /* モーダルの最大高さを設定 */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        overflow: hidden; /* モーダルコンテンツがはみ出さないように */
+      }
+
+      .modal-header {
+        padding: 2px 16px;
+        background-color: #000;
+        color: white;
+      }
+
+      .modal-body {
+        color: black;
+        margin: 5%;
+        overflow-y: auto;
+      }
+      .modal-footer {
+        display: flex; /* フレックスボックスとして設定 */
+        justify-content: center; /* 中央よせ */
+        align-items: center; /* アイテムを垂直方向の中央に配置 */
+        padding: 10px 16px;
+        background-color: #f1f1f1;
+        color: black;
+        text-align: right;
+        border-top: 1px solid #e8e8e8;
+      }
       .item-content:first-child {
         /* 最初の .item-content 要素、つまり username をターゲットにする */
         align-self: center; /* 自分自身を中央に配置 */
@@ -104,13 +153,14 @@
         box-sizing: border-box;
         background-image: var(--background-url);
         width: 100%;
-        height: 150px;
+        height: 100px;
         background-size: 100% 100%;
         background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
         background-position: center; /* 画像を中央に配置する */
         display: flex;
         align-items: center;
         position: relative;
+        padding-right: 10%;
       }
       .bottom-right-text {
         position: absolute;
@@ -143,13 +193,16 @@
         text-align: center;
       }
       .header {
-        background-color: #000; /* 背景色 */
         color: #fff; /* テキスト色 */
         padding: 20px; /* パディング */
         display: flex; /* フレックスボックス */
-        justify-content: space-between; /* 要素を両端に配置 */
-        align-items: center; /* 要素を垂直方向に中央揃え */
-        border: 2px solid gold; /* 金色の枠線 */
+        justify-content: flex-end; /* コンテナ内の要素を水平方向に中央揃えに */
+        align-items: center; /* コンテナ内の要素を垂直方向に中央揃えに */
+        background-image: var(--background-url);
+        background-size: contain;
+        background-repeat: no-repeat;
+        text-align: center; /* テキストを中央揃えに */
+        background-position: center;
       }
       .title {
         font-size: 24px; /* フォントサイズ */
@@ -162,11 +215,18 @@
         padding: 10px; /* パディング */
       }
       .profile-section {
+        width: 800px; /* 横幅を300pxに設定 */
+        margin: 0 auto; /* 上下のマージンを0にし、左右のマージンを自動調整 */
+        height: auto; /* 高さを自動調整 */
         margin-top: 50px;
         background-color: #000; /* 背景色 */
         color: #fff; /* テキスト色 */
         padding: 20px; /* パディング */
         border: 2px solid gold; /* 金色の枠線 */
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
       }
       .profile-config {
         margin-top: 20px;
@@ -188,59 +248,523 @@
       .profile-label {
         font-weight: bold; /* ラベルを太字に */
       }
+      /* ボタンを中央に配置するためのコンテナスタイル */
+      .button-container {
+        text-align: center; /* コンテナ内の要素を中央揃えに */
+        padding-top: 30px; /* 上に余裕を持たせる */
+        padding-bottom: 30px; /* 下に余裕を持たせる */
+      }
+
+      .button-style {
+        border: none; /* ボタンのボーダーを削除 */
+        background-color: transparent; /* 背景色を透明に */
+        padding: 0; /* パディングをなくす */
+        cursor: pointer; /* ホバー時のカーソルを指に */
+        outline: none; /* フォーカス時のアウトラインを削除 */
+        margin: 0; /* マージンを削除 */
+      }
+      .button-container {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .button {
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: #000;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 9px #999;
+        border: 3px solid gold;
+      }
+
+      .button:hover {
+        background-color: #3e8e41;
+      }
+
+      .button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+      }
+
+      .no-button {
+        color: #000;
+        background-color: #fff;
+      }
     </style>
   </head>
-  <body>
-    <div class="header">
-      <div class="title">設定</div>
+  <body style="--background-url: url('{% static 'image/設定背景.png' %}')">
+    <div
+      class="header"
+      style="--background-url: url('{% static 'image/設定.png' %}')"
+    >
       <a class="truncate-text" href="{% url 'product-top-page' %}">
         <div class="points">0000pt</div>
       </a>
     </div>
-    <div
-      class="container"
-      style="--background-url: url('{% static 'image/設定背景.png' %}')"
-    >
-      <div class="profile-section">
+    <div class="container">
+      <div
+        class="profile-section"
+        style="
+          --background-url: url('{% static 'image/プロフィールフレーム枠のみ.png' %}');
+        "
+      >
         <div class="profile-header">プロフィール</div>
         <div class="profile-item">
-          <span class="profile-label">名前:</span>
+          <span class="profile-label">名前:{{username}}</span>
         </div>
         <div class="profile-item">
-          <span class="profile-label">生年月日:</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">利用回数:</span>
+          <span class="profile-label">利用回数:{{message_count}}</span>
         </div>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">アカウント・メルマガ設定</div>
+      <div class="button-container">
+        <button id="myBtn" class="button-style">
+          <img
+            src="{% static 'image/アカウント・メルマガ設定.png' %}"
+            alt="ボタン画像"
+          />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">通知設定</div>
+      <div class="button-container">
+        <button id="myBtn2" class="button-style">
+          <img src="{% static 'image/ヘルプ.png' %}" alt="ボタン画像" />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">ヘルプ</div>
+      <div class="button-container">
+        <button id="myBtn3" class="button-style">
+          <img
+            src="{% static 'image/退会・アカウント削除.png' %}"
+            alt="ボタン画像"
+          />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">退会・アカウント削除</div>
+      <div class="button-container">
+        <button id="myBtn4" class="button-style">
+          <img src="{% static 'image/料金システム.png' %}" alt="ボタン画像" />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">料金システム</div>
+      <div class="button-container">
+        <button id="myBtn5" class="button-style">
+          <img
+            src="{% static 'image/ユーザーマニュアル.png' %}"
+            alt="ボタン画像"
+          />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">ユーザーマニュアル</div>
+      <div class="button-container">
+        <button id="myBtn6" class="button-style">
+          <img src="{% static 'image/利用規約.png' %}" alt="ボタン画像" />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">利用規約</div>
+      <div class="button-container">
+        <button id="myBtn7" class="button-style">
+          <img
+            src="{% static 'image/プライバシーポリシー.png' %}"
+            alt="ボタン画像"
+          />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">プライバシーポリシー</div>
+      <div class="button-container">
+        <button id="myBtn8" class="button-style">
+          <img
+            src="{% static 'image/特定商取引法に基づく表示.png' %}"
+            alt="ボタン画像"
+          />
+        </button>
       </div>
-      <div class="profile-config">
-        <div class="profile-header">特定商取引法に基づく表示</div>
+    </div>
+    <div id="myModal" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>アカウント・メルマガ設定</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">
+          <!-- プロフィール変更フォーム -->
+          {{account_settings_value}}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %} {{ form.as_p }}
+            <button class="button" type="submit">保存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="myModal2" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close2">&times;</span>
+          <h2>ヘルプ</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{help_value}}</div>
+      </div>
+    </div>
+    <div id="myModal3" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close3">&times;</span>
+          <h2>退会・アカウント削除</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{account_deletion}}</div>
+        <div class="modal-footer">
+          <button id="yes-button" class="button">YES</button>
+          <button class="button no-button">NO</button>
+        </div>
+      </div>
+    </div>
+    <div id="myModal4" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close4">&times;</span>
+          <h2>料金について</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">
+          {{pricing_system}} {% for item in product_list %}
+          <form
+            method="post"
+            action="{% url 'create-checkout-session' item.id %}"
+          >
+            {% csrf_token %}
+            <div
+              class="message-box"
+              style="
+                --background-url: url('{% static 'image/料金システム-白背景ボックス.png' %}');
+              "
+            >
+              <img
+                width="80%"
+                height="80%"
+                class="rounded-circle resize-width"
+                src="{% static 'image/P.png' %}"
+                alt="avatar_thumbnail"
+                onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
+              />
+              <div class="message-content">
+                <div class="item-content">{{item.point}}</div>
+                <div class="item-content">{{item.description}}</div>
+              </div>
+              <div
+                class="fee-box"
+                style="
+                  --background-url: url('{% static 'image/購入ボックス.png' %}');
+                "
+              >
+                {% for price_data in item.Prices.all %}
+                <div class="inner-element">
+                  {{ price_data.get_display_price }}¥
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal5" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close5">&times;</span>
+          <h2>ユーザーマニュアル</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{user_manual}}</div>
+      </div>
+    </div>
+    <div id="myModal6" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close6">&times;</span>
+          <h2>利用規約</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{terms_of_service}}</div>
+      </div>
+    </div>
+    <div id="myModal7" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close7">&times;</span>
+          <h2>プライバシーポリシー</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{privacy_policy}}</div>
+      </div>
+    </div>
+    <div id="myModal8" class="modal">
+      <!-- モーダルコンテンツ -->
+      <div class="modal-content">
+        <!-- モーダルヘッダー -->
+        <div class="modal-header">
+          <span class="close8">&times;</span>
+          <h2>特定商取引法に基づく表示</h2>
+        </div>
+        <!-- モーダルボディ -->
+        <div class="modal-body">{{spec_com_trans_law}}</div>
       </div>
     </div>
     {% include '_footer.html' %}
   </body>
+  <script>
+    // モーダルを取得
+    var modal = document.getElementById("myModal");
+
+    // モーダルを起動するボタンを取得
+    var btn = document.getElementById("myBtn");
+
+    // 閉じるボタンを取得
+    var span = document.getElementsByClassName("close")[0];
+
+    // モーダルを取得
+    var modal2 = document.getElementById("myModal2");
+
+    // モーダルを起動するボタンを取得
+    var btn2 = document.getElementById("myBtn2");
+
+    // 閉じるボタンを取得
+    var span2 = document.getElementsByClassName("close2")[0];
+
+    // モーダルを取得
+    var modal3 = document.getElementById("myModal3");
+
+    // モーダルを起動するボタンを取得
+    var btn3 = document.getElementById("myBtn3");
+
+    // 閉じるボタンを取得
+    var span3 = document.getElementsByClassName("close3")[0];
+
+    // モーダルを取得
+    var modal4 = document.getElementById("myModal4");
+
+    // モーダルを起動するボタンを取得
+    var btn4 = document.getElementById("myBtn4");
+
+    // 閉じるボタンを取得
+    var span4 = document.getElementsByClassName("close4")[0];
+
+    // モーダルを取得
+    var modal5 = document.getElementById("myModal5");
+
+    // モーダルを起動するボタンを取得
+    var btn5 = document.getElementById("myBtn5");
+
+    // 閉じるボタンを取得
+    var span5 = document.getElementsByClassName("close5")[0];
+
+    // モーダルを取得
+    var modal6 = document.getElementById("myModal6");
+
+    // モーダルを起動するボタンを取得
+    var btn6 = document.getElementById("myBtn6");
+
+    // 閉じるボタンを取得
+    var span6 = document.getElementsByClassName("close6")[0];
+
+    // モーダルを取得
+    var modal7 = document.getElementById("myModal7");
+
+    // モーダルを起動するボタンを取得
+    var btn7 = document.getElementById("myBtn7");
+
+    // 閉じるボタンを取得
+    var span7 = document.getElementsByClassName("close7")[0];
+
+    // モーダルを取得
+    var modal8 = document.getElementById("myModal8");
+
+    // モーダルを起動するボタンを取得
+    var btn8 = document.getElementById("myBtn8");
+
+    // 閉じるボタンを取得
+    var span8 = document.getElementsByClassName("close8")[0];
+
+    // ボタンをクリックしたらモーダルを表示
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn2.onclick = function () {
+      modal2.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span2.onclick = function () {
+      modal2.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn3.onclick = function () {
+      modal3.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span3.onclick = function () {
+      modal3.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn4.onclick = function () {
+      modal4.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span4.onclick = function () {
+      modal4.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn5.onclick = function () {
+      modal5.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span5.onclick = function () {
+      modal5.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn6.onclick = function () {
+      modal6.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span6.onclick = function () {
+      modal6.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn7.onclick = function () {
+      modal7.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span7.onclick = function () {
+      modal7.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn8.onclick = function () {
+      modal8.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span8.onclick = function () {
+      modal8.style.display = "none";
+    };
+
+    // モーダルの外側をクリックしたらモーダルを非表示
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+      if (event.target == modal2) {
+        modal2.style.display = "none";
+      }
+      if (event.target == modal3) {
+        modal3.style.display = "none";
+      }
+      if (event.target == modal4) {
+        modal4.style.display = "none";
+      }
+      if (event.target == modal5) {
+        modal5.style.display = "none";
+      }
+      if (event.target == modal6) {
+        modal6.style.display = "none";
+      }
+      if (event.target == modal7) {
+        modal7.style.display = "none";
+      }
+      if (event.target == modal8) {
+        modal8.style.display = "none";
+      }
+    };
+    document.addEventListener("DOMContentLoaded", (event) => {
+      // 'YES'ボタンを取得
+      var yesButton = document.getElementById("yes-button");
+
+      // 'YES'ボタンにクリックイベントリスナーを追加
+      yesButton.addEventListener("click", function () {
+        deleteUser();
+      });
+    });
+
+    // ユーザーを削除する関数
+    function deleteUser() {
+      fetch("/delete-user/", {
+        // エンドポイントのURLを指定
+        method: "POST", // HTTPメソッドを指定
+        headers: {
+          "Content-Type": "application/json",
+          // CSRFトークンは、Djangoのセキュリティ機能で必要になる場合があります
+          "X-CSRFToken": getCookie("csrftoken"), // 関数getCookieを後で定義
+        },
+        credentials: "same-origin", // クッキーを送信するための設定
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          return response.json(); // ここでJSONレスポンスを解析
+        })
+        .then((data) => {
+          console.log(data);
+          // ここでモーダルを閉じたり、他のUIの更新を行う
+        })
+        .catch((error) => {
+          console.error(
+            "There has been a problem with your fetch operation:",
+            error
+          );
+        });
+    }
+
+    // CSRFトークンを取得するためのヘルパー関数
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
 </html>

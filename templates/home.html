@@ -38,17 +38,19 @@
       .rounded-circle {
         border-radius: 50%;
       }
-      .container {
+      .div-container {
         flex: 1;
         position: relative;
-        background-image: var(--background-url);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        min-height: 100%;
-        margin: 0 auto; /* 追加 */
+        padding-bottom: 1020px; /* 下の余白 */
         flex-grow: 1;
         width: 100%;
+      }
+      html {
+        background-image: url("{% static 'image/占い師一覧背景.png' %}"); /* 背景画像のパス */
+        background-size: cover; /* 画像を画面全体にフィットさせる */
+        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+        background-attachment: fixed; /* 画像をスクロールに追随させない */
+        background-position: center center; /* 画像の位置を中央に設定 */
       }
       .footer {
         position: fixed; /* fixedからabsoluteに変更 */
@@ -141,6 +143,29 @@
         width: 100%;
         max-width: 800px;
       }
+      /* */
+      .button-container {
+        text-align: center; /* コンテナ内の要素を中央揃えに */
+        height: 60%; /* 全高さを利用 */
+        background-image: var(--background-url);
+        background-size: 1000px 500px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      .button-container-text {
+        padding-top: 200px;
+        font-size: 30px;
+      }
+      /*  */
+      .button-container-image {
+        text-align: center; /* コンテナ内の要素を中央揃えに */
+        padding-top: 30px; /* 上に余裕を持たせる */
+        padding-bottom: 30px; /* 下に余裕を持たせる */
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
       .message-container {
         padding: 15px;
         margin: 20px 0;
@@ -150,95 +175,24 @@
     </style>
   </head>
   <body>
-    <div
-      class="container"
-      style="--background-url: url('{% static 'image/占い師一覧背景.png' %}')"
-    >
-      <div class="message-container">
-        <p>
-          ケアカンへようこそ！ケア館では占い師が皆様の悩みに占いで答えていきます！
-          お気軽にご利用ください！
-        </p>
+    <div class="div-container">
+      <div class="button-container-image">
+        <img src="{% static 'image/ケアカンとは？.png' %}" alt="ボタン画像" />
       </div>
-      <div class="points">0000pt</div>
-      <h2 style="text-align: center; color: #fff">占い師一覧</h2>
-      <div class="scrollable-container">
-        {% for item in object_list %}
-        <a class="truncate-text" href="{% url 'diviner_detail' item.id %}">
-          <div
-            class="message-box"
-            style="
-              --background-url: url('{% static 'image/占い師一覧フレーム.png' %}');
-            "
-          >
-            {% if item.profile.img %}
-            <img
-              width="80%"
-              height="80%"
-              class="rounded-circle resize-width"
-              src="{{ item.profile.img.url }}"
-              alt="avatar_thumbnail"
-              onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
-            />
-            {% else %}
-            <img
-              width="80%"
-              height="80%"
-              class="rounded-circle resize-width"
-              src="https://ptetutorials.com/images/user-profile.png"
-              alt="avatar_thumbnail"
-            />
-            {% endif %}
-            <div class="message-content">
-              <div class="item-content">{{item.username}}</div>
-              <div class="item-content">{{item.divinertype_display}}</div>
-            </div>
-            <div class="bottom-right-text">10</div>
-          </div>
-        </a>
-        {% endfor %}
+      <div
+        class="button-container"
+        style="--background-url: url('{% static 'image/ホームフレーム.png' %}')"
+      >
+        <p class="button-container-text">{{about_carecan}}</p>
       </div>
-    </div>
-    <div
-      class="container"
-      style="--background-url: url('{% static 'image/占い師一覧背景.png' %}')"
-    >
-      <h2 style="text-align: center; color: #fff">チャット一覧</h2>
-      <div class="scrollable-chat-container">
-        {% for item in object_list %}
-        <a class="truncate-text" href="{% url 'diviner_detail' item.id %}">
-          <div
-            class="message-box"
-            style="
-              --background-url: url('{% static 'image/占い師一覧フレーム.png' %}');
-            "
-          >
-            {% if item.profile.img %}
-            <img
-              width="80%"
-              height="80%"
-              class="rounded-circle resize-width"
-              src="{{ item.profile.img.url }}"
-              alt="avatar_thumbnail"
-              onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
-            />
-            {% else %}
-            <img
-              width="80%"
-              height="80%"
-              class="rounded-circle resize-width"
-              src="https://ptetutorials.com/images/user-profile.png"
-              alt="avatar_thumbnail"
-            />
-            {% endif %}
-            <div class="message-content">
-              <div class="item-content">{{item.username}}</div>
-              <div class="item-content">{{item.divinertype_display}}</div>
-            </div>
-            <div class="bottom-right-text">10</div>
-          </div>
-        </a>
-        {% endfor %}
+      <div class="button-container-image">
+        <img src="{% static 'image/ケアカンの特徴.png' %}" alt="ボタン画像" />
+      </div>
+      <div
+        class="button-container"
+        style="--background-url: url('{% static 'image/ホームフレーム.png' %}')"
+      >
+        <p class="button-container-text">{{features_of_carecan}}</p>
       </div>
     </div>
     {% include '_footer.html' %}

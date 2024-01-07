@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/messages', UpdateMessage.as_view()),
     path('change/', ProfileChangeView.as_view(), name="change"),
     path('api/user-points/', UserPointsView.as_view(), name='user-points'),
+    path('delete-user/', delete_user, name='delete-user'),
 ]

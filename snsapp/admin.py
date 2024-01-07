@@ -15,7 +15,8 @@ class PriceInlineAdmin(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [PriceInlineAdmin]
-    
+
+admin.site.register(Config)
 admin.site.register(Transaction)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Price)

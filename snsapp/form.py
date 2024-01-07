@@ -60,6 +60,7 @@ class CustomSignupForm(SignupForm):  # SignupFormを継承する
         user.usertype = self.cleaned_data['usertype']
         
         # usertypeが占い師の場合、divinertypeも保存
+        print(self.cleaned_data['divinertype'])
         if user.usertype == '占い師':
             user.divinertype.set(self.cleaned_data['divinertype'])  # setメソッドを使用して複数選択された値を保存
             
@@ -72,21 +73,31 @@ class ProfileChangeForm(ModelForm):
         fields = [
             'nickName',
             'img',
+            'receive_newsletter'
         ]
 
-    def __init__(self, nickName=None,img=None, *args, **kwargs):
+    def __init__(self, nickName=None,img=None,receive_newsletter=None, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
         super().__init__(*args, **kwargs)
+        # 各フィールドのカスタムラベルを設定
+        self.fields['nickName'].label = "ニックネーム"
+        self.fields['img'].label = "画像"
+        self.fields['receive_newsletter'].label = "メールマガジンを受信する"
+
         # ユーザーの更新前情報をフォームに挿入
         self.fields['nickName'].widget.attrs['class'] = 'form-control col-12'
         self.fields['img'].widget.attrs['class'] = 'form-control col-12'
+        self.fields['receive_newsletter'].widget.attrs['class'] = 'form-control col-12'
         if nickName:
             self.fields['nickName'].widget.attrs['value'] = nickName
         if img:
             self.fields['img'].widget.attrs['value'] = img
+        if receive_newsletter:
+            self.fields['img'].widget.attrs['value'] = receive_newsletter
     def update(self, profile):
         profile.nickName = self.cleaned_data['nickName']
         profile.img = self.cleaned_data['img']
+        profile.receive_newsletter = self.cleaned_data['receive_newsletter']
         profile.save()
 
 class DivinerTypeForm(forms.ModelForm):

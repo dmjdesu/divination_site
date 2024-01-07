@@ -16,6 +16,14 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed
+from shopping.models import Product
+from .models import Config  # Config モデルのインポート
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import logout
+
 
 from snsapp.form import DivinerTypeForm, ProfileChangeForm, SendMessageForm
 from .serializers import MessageSerializer, UserSerializer
@@ -26,6 +34,13 @@ class Home(LoginRequiredMixin, ListView):
     """HOMEページで、自分以外のユーザー投稿をリスト表示"""
     model = User
     template_name = 'home.html'
+
+    def get_config_value(self,key):
+        try:
+            config = Config.objects.get(key=key)
+            return config.value
+        except Config.DoesNotExist:
+            return None
 
     def get_queryset(self):
         """リクエストユーザーのみ除外"""
@@ -40,6 +55,8 @@ class Home(LoginRequiredMixin, ListView):
         context['chat_messages'] =  Messages.objects.filter(
                 (Q(sender_name=current_user.id) | Q(receiver_name=current_user.id))
             )
+        context["about_carecan"] = self.get_config_value('about_carecan')
+        context["features_of_carecan"] = self.get_config_value('features_of_carecan')
         return context
     
     
@@ -129,6 +146,8 @@ class DivinerDetail(DetailView, ProcessFormView):
         context = super().get_context_data(**kwargs)
         context['message_form'] = SendMessageForm()
         context['diviner'] = self.get_object() 
+        context['divinertype_display'] = context['diviner'].divinertype_display
+
         if context['diviner'].profile_data is not None and 'img' in context['diviner'].profile_data:
             context['image_url'] = context['diviner'].profile_data["img"]
         else:
@@ -137,8 +156,6 @@ class DivinerDetail(DetailView, ProcessFormView):
 
     def post(self, request, *args, **kwargs):
         form = SendMessageForm(request.POST)
-        print(form.is_valid())
-        print("form.is_valid()")
         if form.is_valid():
             pk = self.kwargs.get("pk")
             user = get_object_or_404(get_user_model(), id=pk)
@@ -343,7 +360,6 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
     def get_initial(self):
         initial = super().get_initial()
         profile, created = Profile.objects.get_or_create(userPro=self.request.user, defaults={'nickName': 'デフォルトユーザー'})
-        initial['nickName'] = profile.nickName
         initial['img'] = profile.img
         return initial
     
@@ -351,6 +367,32 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         profile = Profile.objects.get(userPro=self.request.user)
         form.update(profile)
         return super().form_valid(form)
+    
+    def get_config_value(self,key):
+        try:
+            config = Config.objects.get(key=key)
+            return config.value
+        except Config.DoesNotExist:
+            return None
+    
+    # テンプレート内で呼び出せる、コンテキストをセットする。
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(userPro=self.request.user)
+        context['username'] = self.request.user.username
+        context['email'] = profile.userPro.email
+        context['message_count'] = Messages.objects.filter(sender_name=self.request.user).count()
+        context["product_list"] = Product.objects.all()
+
+        context["account_settings_value"] = self.get_config_value('account_settings')
+        context["help_value"] = self.get_config_value('help')
+        context["account_deletion"] = self.get_config_value('account_deletion')
+        context["pricing_system"] = self.get_config_value('pricing_system')
+        context["user_manual"] = self.get_config_value('user_manual')
+        context["terms_of_service"] = self.get_config_value('terms_of_service')
+        context["privacy_policy"] = self.get_config_value('privacy_policy')
+        context["spec_com_trans_law"] = self.get_config_value('spec_com_trans_law')
+        return context
     
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -362,3 +404,16 @@ class UserPointsView(APIView):
     def get(self, request, *args, **kwargs):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    # ログインしているユーザーを取得
+    user = request.user
+    # ユーザーのis_deletedをTrueに設定
+    user.is_deleted = True
+    user.save()
+    # ユーザーをログアウトさせる
+    logout(request)
+    # レスポンスを返す
+    return Response(status=status.HTTP_204_NO_CONTENT)

@@ -4,6 +4,7 @@ from django.db.models.expressions import Value, ExpressionWrapper
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.forms import model_to_dict
  
 from snsapp.models import DIVINER_TYPE_CHOICES, Cost, Messages, Connection, Profile, User
 
@@ -77,11 +78,29 @@ class Message(LoginRequiredMixin, View):
             (Q(sender_name=current_user.id) & Q(receiver_name=friend.id)) |
             (Q(sender_name=friend.id) & Q(receiver_name=current_user.id))
         )
+        
         # friends = getFriendsList(self)
+        if friend.profile_data is not None and 'img' in friend.profile_data:
+             friend_img = friend.profile_data["img"]
+        else:
+            friend_img = None
+
+        if current_user.profile_data is not None and 'img' in current_user.profile_data:
+             current_user_img = current_user.profile_data["img"]
+        else:
+            current_user_img = None
+        print("chat_messages")
+        print(model_to_dict(chat_messages[0]))
+        print(current_user.id)
+        print("current_user.id")
+        print(current_user.id == model_to_dict(chat_messages[0])["receiver_name"])
         return render(request, "chat/room.html",
                         {'chat_messages': chat_messages,
-                        # 'friends': friends,
+                        'friend_img': friend_img,
+                        'current_user_img': current_user_img,
                         'room_name': username, # ここでroomNameを指定している
                         'current_user_name': current_user.username, 
-                        'friend_name': friend.username
+                        'current_user_id': current_user.id, 
+                        'friend_name': friend.username.replace(' ', ''),
+                        'friend_id': friend.id,
                         })

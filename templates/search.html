@@ -13,7 +13,6 @@
         flex-direction: column;
         height: 100vh;
         margin: 0;
-        padding-bottom: 80px; /* footerの高さ分のpaddingを追加 */
       }
       .scrollable-container {
         max-height: 75%; /* この値は必要に応じて調整してください */
@@ -34,7 +33,6 @@
       }
       .container {
         flex: 1;
-        padding: 30px 10px;
         position: relative;
         background-image: var(--background-url);
         background-size: cover;
@@ -136,6 +134,7 @@
               --background-url: url('{% static 'image/チャットフレーム.png' %}');
             "
           >
+            {% if following.profile.img %}
             <img
               width="80%"
               height="80%"
@@ -144,6 +143,15 @@
               alt="avatar_thumbnail"
               onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
             />
+            {% else %}
+            <img
+              width="80%"
+              height="80%"
+              src="https://ptetutorials.com/images/user-profile.png"
+              alt="カスタムアイコンの説明"
+              class="rounded-circle resize-width"
+            />
+            {% endif %}
             <div class="message-content">
               <div class="item-content">{{following.username}}</div>
               <div class="item-content">{{following.latest_message}}</div>
@@ -159,7 +167,7 @@
         </a>
         {% endfor %}
       </div>
-      {% include '_footer.html' %}
     </div>
+    {% include '_footer.html' %}
   </body>
 </html>

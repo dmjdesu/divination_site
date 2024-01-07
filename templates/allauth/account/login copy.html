@@ -1,0 +1,43 @@
+{% extends "account/base.html" %} {% load django_bootstrap5 %} {% load i18n %}
+{% load account socialaccount %} {% block content %}
+
+<h1 class="h3 mb-3 font-weight-normal">ログイン</h1>
+
+{% get_providers as socialaccount_providers %} {% if socialaccount_providers %}
+
+<div class="socialaccount_ballot">
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+</div>
+
+{% else %}
+<p>
+  {% blocktrans %}まだアカウントを作成していない場合、先に
+  <a href="{{ signup_url }}">サインアップ</a>してください。{% endblocktrans %}
+</p>
+{% endif %}
+
+<form class="form-signin" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %} {% bootstrap_form form %} {% if redirect_field_value %}
+  <input
+    type="hidden"
+    name="{{ redirect_field_name }}"
+    value="{{ redirect_field_value }}"
+  />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}"
+    >{% trans "Forgot Password?" %}</a
+  >
+  <button type="submit" class="btn btn-lg btn-primary btn-block" type="submit">
+    ログイン
+  </button>
+</form>
+
+<style>
+  .container-maxwidth {
+    margin-top: 70px; /* navbarの高さに応じて調整 */
+  }
+</style>
+
+{% endblock %}

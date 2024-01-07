@@ -8,13 +8,6 @@
         class="icon-size"
       />
     </a>
-    <a href="{% url 'mydiviner' %}">
-      <img
-        src="{% static 'image/ホームアイコン.png' %}"
-        alt="占い師一覧"
-        class="icon-size"
-      />
-    </a>
     <a href="{% url 'search_user' %}">
       <img
         src="{% static 'image/チャットアイコン.png' %}"
@@ -22,7 +15,13 @@
         class="icon-size"
       />
     </a>
-
+    <a href="{% url 'mydiviner' %}">
+      <img
+        src="{% static 'image/占い師一覧.png' %}"
+        alt="占い師一覧"
+        class="icon-size"
+      />
+    </a>
     <a href="{% url 'change' %}">
       <img
         src="{% static 'image/設定アイコン.png' %}"

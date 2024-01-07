@@ -116,7 +116,7 @@
         background-image: var(--background-url);
         width: 100%;
         height: 150px;
-        background-size: 15% 80%;
+        background-size: 15% 40%;
         background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
         background-position: 90% center;
         display: flex;
@@ -126,7 +126,7 @@
       }
       .inner-element {
         position: absolute; /* 親要素に対して絶対位置指定 */
-        top: 50%; /* 親要素の上端からの距離を50%に設定 */
+        top: 55%; /* 親要素の上端からの距離を50%に設定 */
         left: 85%; /* 親要素の左端からの距離を50%に設定 */
         transform: translate(
           -50%,
@@ -163,6 +163,90 @@
       img {
         width: 100%;
         max-width: 800px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 50%;
+        height: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-header {
+        padding: 2px 16px;
+        background-color: #000;
+        color: white;
+      }
+
+      .modal-body {
+        padding: 2px 16px;
+        color: black;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .close2 {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close2:hover,
+      .close2:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* ボタンを中央に配置するためのコンテナスタイル */
+      .button-container {
+        text-align: center; /* コンテナ内の要素を中央揃えに */
+        padding-top: 30px; /* 上に余裕を持たせる */
+        padding-bottom: 30px; /* 下に余裕を持たせる */
+      }
+
+      .button-style {
+        border: none; /* ボタンのボーダーを削除 */
+        background-color: transparent; /* 背景色を透明に */
+        padding: 0; /* パディングをなくす */
+        cursor: pointer; /* ホバー時のカーソルを指に */
+        outline: none; /* フォーカス時のアウトラインを削除 */
+        margin: 0; /* マージンを削除 */
+      }
+
+      .button-style img {
+        display: block; /* 画像のデフォルトのマージンを削除 */
+        width: auto; /* 必要に応じて画像の幅を設定 */
+        height: auto; /* 必要に応じて画像の高さを設定 */
       }
     </style>
   </head>
@@ -212,6 +296,45 @@
           </div>
         </form>
         {% endfor %}
+        <div class="button-container">
+          <button id="myBtn" class="button-style">
+            <img src="{% static 'image/料金について.png' %}" alt="ボタン画像" />
+          </button>
+        </div>
+        <div class="button-container">
+          <button id="myBtn2" class="button-style">
+            <img
+              src="{% static 'image/資金決済法に基づく表示.png' %}"
+              alt="ボタン画像"
+            />
+          </button>
+        </div>
+
+        <div id="myModal" class="modal">
+          <!-- モーダルコンテンツ -->
+          <div class="modal-content">
+            <!-- モーダルヘッダー -->
+            <div class="modal-header">
+              <span class="close">&times;</span>
+              <h2>料金について</h2>
+            </div>
+            <!-- モーダルボディ -->
+            <div class="modal-body">{{pricing_about}}</div>
+          </div>
+        </div>
+
+        <div id="myModal2" class="modal">
+          <!-- モーダルコンテンツ -->
+          <div class="modal-content">
+            <!-- モーダルヘッダー -->
+            <div class="modal-header">
+              <span class="close2">&times;</span>
+              <h2>資金決済法に基づく表示</h2>
+            </div>
+            <!-- モーダルボディ -->
+            <div class="modal-body">{{asset_settlement_law}}</div>
+          </div>
+        </div>
       </div>
       {% include '_footer.html' %}
     </div>
@@ -225,5 +348,52 @@
         this.closest("form").submit();
       });
     });
+    // モーダルを取得
+    var modal = document.getElementById("myModal");
+
+    // モーダルを起動するボタンを取得
+    var btn = document.getElementById("myBtn");
+
+    // 閉じるボタンを取得
+    var span2 = document.getElementsByClassName("close2")[0];
+
+    // モーダルを取得
+    var modal2 = document.getElementById("myModal2");
+
+    // モーダルを起動するボタンを取得
+    var btn2 = document.getElementById("myBtn2");
+
+    // 閉じるボタンを取得
+    var span = document.getElementsByClassName("close")[0];
+
+    // ボタンをクリックしたらモーダルを表示
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // ボタンをクリックしたらモーダルを表示
+    btn2.onclick = function () {
+      modal2.style.display = "block";
+    };
+
+    // 閉じるボタンをクリックしたらモーダルを非表示
+    span2.onclick = function () {
+      modal2.style.display = "none";
+    };
+
+    // モーダルの外側をクリックしたらモーダルを非表示
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+      if (event.target == modal2) {
+        modal2.style.display = "none";
+      }
+    };
   </script>
 </html>

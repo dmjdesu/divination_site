@@ -77,6 +77,27 @@ DIVINER_TYPE_CHOICES = (
 
 class DivinerType(models.Model):
     name = models.CharField(max_length=30, choices=DIVINER_TYPE_CHOICES)
+class Config(models.Model):
+    SETTING_CHOICES = [
+        ('account_settings', 'アカウント・メルマガ設定'),
+        ('help', 'ヘルプ'),
+        ('account_deletion', '退会・アカウント削除'),
+        ('pricing_system', '料金システム'),
+        ('user_manual', 'ユーザーマニュアル'),
+        ('terms_of_service', '利用規約'),
+        ('privacy_policy', 'プライバシーポリシー'),
+        ('spec_com_trans_law', '特定商取引法に基づく表示'),
+        ('pricing_about', '料金について'),  # 新しく追加されたキー
+        ('asset_settlement_law', '資産決済法に基づく表示'),  # 新しく追加されたキー
+        ('about_carecan', 'ケアカンとは？'),  # 新しく追加されたキー
+        ('features_of_carecan', 'ケアカンの特徴'),  # 新しく追加されたキー
+    ]
+
+    key = models.CharField(max_length=50, choices=SETTING_CHOICES, unique=True, primary_key=True)
+    value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.get_key_display()
 
 class User(AbstractBaseUser, PermissionsMixin):
     
@@ -130,6 +151,7 @@ class Profile(models.Model):
     )
     created_on = models.DateTimeField(auto_now_add=True)
     img = models.ImageField(blank=True, null=True, upload_to=upload_path)
+    receive_newsletter = models.BooleanField(default=False)  # メールマガジン受信フラグ
 
     def __str__(self):
         return self.nickName
@@ -138,7 +160,9 @@ class Messages(models.Model):
     
     description = models.TextField()
     sender_name = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="送信者", on_delete=models.CASCADE, related_name='sender')
+    sender_id = models.IntegerField(default=0)
     receiver_name = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="受信者", on_delete=models.CASCADE, related_name='receiver')
+    receiver_id = models.IntegerField(default=0)
     time = models.TimeField(auto_now_add=True)
     seen = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)

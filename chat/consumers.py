@@ -50,7 +50,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message_object = Messages(
             description=message,
             sender_name=sender,
-            receiver_name=receiver
+            sender_id=sender.id,
+            receiver_name=receiver,
+            receiver_id=receiver.id,
         )
         await database_sync_to_async(message_object.save)()
 

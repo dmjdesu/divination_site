@@ -115,12 +115,17 @@
       .bottom-right-text {
         position: absolute;
         bottom: 20px; /* 10pxは例としての値で、必要に応じて変更してください */
-        right: 75px; /* 同上 */
+        right: 90px; /* 同上 */
         /* 必要に応じてその他のスタイルを追加 */
       }
       .resize-width {
         width: 100px; /* あるいは希望するサイズに設定 */
         height: auto;
+        margin-left: 7%;
+      }
+      .resize-width-icon {
+        width: 100px; /* あるいは希望するサイズに設定 */
+
         margin-left: 7%;
       }
       .icon-size {
@@ -155,9 +160,9 @@
           >
             {% if item.profile.img %}
             <img
-              width="80%"
-              height="80%"
-              class="rounded-circle resize-width"
+              width="80px"
+              height="80px"
+              class="rounded-circle resize-width-icon"
               src="{{ item.profile.img.url }}"
               alt="avatar_thumbnail"
               onerror="this.onerror=null; this.src='https://ptetutorials.com/images/user-profile.png'"
@@ -175,7 +180,7 @@
               <div class="item-content">{{item.username}}</div>
               <div class="item-content">{{item.divinertype_display}}</div>
             </div>
-            <div class="bottom-right-text">10</div>
+            <div class="bottom-right-text">10pt</div>
           </div>
         </a>
         {% endfor %}

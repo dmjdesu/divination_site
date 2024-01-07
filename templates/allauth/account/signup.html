@@ -1,53 +1,235 @@
-{% extends "account/base.html" %} {% load django_bootstrap5 %} {% load i18n %}
-{% load account socialaccount %} {% block content %}
-{% load static %}
-<h1 class="h3 mb-3 font-weight-normal">新規ユーザー登録</h1>
-<link rel="stylesheet" href="{% static 'django_select2/django_select2.css' %}">
-<script src="{% static 'django_select2/django_select2.js' %}"></script>
-<form
+{% load static %} {% load django_bootstrap5 %} {% load i18n %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <style>
+      body {
+        font-family: "Yu Gothic", sans-serif;
+        /* background-color: #000; この行をコメントアウト */
+        color: white;
+        margin: 0;
+        padding: 0;
+        flex-direction: column; /* 子要素を縦方向に並べる */
+      }
+
+            a, a:visited {
+  color: white; /* リンクと訪問後の色を白色に設定 */
+  text-decoration: none; /* 下線を削除する場合 */
+}
+
+a:hover, a:focus {
+  color: white; /* ホバーまたはフォーカス時も白色を維持 */
+  text-decoration: underline; /* ホバー時に下線を表示する場合 */
+}
+
+      .back-button-img {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .container {
+        display: flex; /* フレックスコンテナとして設定 */
+        flex-direction: column; /* 子要素を縦方向に並べる */
+        justify-content: flex-end; /* 子要素をコンテナの最下部に揃える */
+        align-items: center; /* 子要素を中央に揃える */
+        position: relative;
+        background-image: var(--background-url);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 110vh;
+        max-width: 600px; /* 追加 */
+        margin: 0 auto; /* 追加 */
+      }
+
+      .back-button {
+        position: fixed;
+        top: 0;
+        left: 100;
+        z-index: 10;
+      }
+
+      .back-button img {
+        max-width: 100px; /* このサイズは適宜調整してください。 */
+        height: auto;
+      }
+
+      .header {
+        text-align: center;
+        font-size: 1.5em;
+        background-image: var(--background-url);
+        padding: 50px 0;
+        background-size: cover;
+        position: relative;
+        overflow: visible;
+      }
+
+      .custom-icon {
+        position: absolute;
+        z-index: 10; /* これが2つの背景の上に来るように設定 */
+        top: 50%; /* アイコンの上端を親要素の中央に配置 */
+        left: 50%; /* アイコンの左端を親要素の中央に配置 */
+        transform: translate(-50%, 0%); /* アイコン自体を中央に移動 */
+        width: 100px; /* アイコンのサイズ指定 */
+        height: 100px;
+        border-radius: 50%;
+      }
+
+      .content {
+        background-image: url("yuuyake.jpeg");
+        background-size: cover;
+        padding: 40px 0;
+        z-index: 1;
+      }
+
+      .menu2 {
+        position: absolute; /* 絶対位置指定 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; /* テキストボックス間の間隔 */
+        margin-top: 50px; /* コンテナの上部からの距離 */
+        top: 20px; /* 上から20pxの位置 */
+        left: 50%; /* 横方向の中央 */
+        transform: translateX(-50%); /* 左方向に自身の幅の50%移動して中央揃え */
+        width: 80%; /* 幅の設定 */
+      }
+
+      .menu2 input[type="text"] {
+        border: 1px solid #ffffff; /* 白色の境界線 */
+        border-radius: 10px; /* 角の丸み */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影 */
+        padding: 15px 20px; /* 内部の余白 */
+        width: 80%; /* 親要素に対する幅の割合 */
+        font-size: 1em; /* フォントサイズ */
+        color: #000000; /* テキストの色 */
+      }
+      .menu2 input[type="email"] {
+        border: 1px solid #ffffff; /* 白色の境界線 */
+        border-radius: 10px; /* 角の丸み */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影 */
+        padding: 15px 20px; /* 内部の余白 */
+        width: 80%; /* 親要素に対する幅の割合 */
+        font-size: 1em; /* フォントサイズ */
+        color: #000000; /* テキストの色 */
+      }
+      .menu2 input[type="password"] {
+        border: 1px solid #ffffff; /* 白色の境界線 */
+        border-radius: 10px; /* 角の丸み */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影 */
+        padding: 15px 20px; /* 内部の余白 */
+        width: 80%; /* 親要素に対する幅の割合 */
+        font-size: 1em; /* フォントサイズ */
+        color: #000000; /* テキストの色 */
+      }
+      .menu2 select {
+        border: 1px solid #ffffff; /* 白色の境界線 */
+        border-radius: 10px; /* 角の丸み */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影 */
+        padding: 15px 20px; /* 内部の余白 */
+        width: 80%; /* 親要素に対する幅の割合 */
+        font-size: 1em; /* フォントサイズ */
+        color: #000000; /* テキストの色 */
+      }
+
+      .linkmenu {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+      }
+
+
+      .button, .btn {
+        /* 既存のスタイルを保持 */
+        cursor: pointer;
+        font-size: 18px;
+        border: 1px solid #fff; /* またはボタンに応じた色 */
+        outline: none;
+        padding: 15px 30px;
+        margin-bottom: 10px;
+        /* 丸みを帯びた角のスタイルを追加 */
+        border-radius: 20px; /* この値を調整して、ボタンの角の丸みを変更 */
+        /* ボタンの背景色やテキスト色もここで調整可能 */
+        color: black; /* ボタンのテキスト色 */
+      }
+
+      .button:hover, .btn:hover {
+        opacity: 0.8; /* ホバー時のスタイル */
+      }
+
+
+      .linkbutton {
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        text-align: center;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 1px solid #fff; /* またはボタンに応じた色 */
+        text-decoration: none;
+        font-size: 16px;
+      }
+      .button:hover {
+        opacity: 0.8;
+      }
+      /* ボタンのスタイルを追加 */
+      .btn {
+        cursor: pointer;
+        font-size: 18px;
+        border: none; /* 枠線なし */
+        outline: none; /* アウトラインなし */
+        padding: 15px 30px; /* パディングを設定 */
+        margin-bottom: 10px; /* 下マージンを設定 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      class="container"
+      style="--background-url: url('{% static 'image/登録ログイン背景.png' %}')"
+    >
+    <form
   class="form-signin"
   id="signup_form"
   method="post"
   action="{% url 'account_signup' %}"
 >
-  {% csrf_token %} {% bootstrap_form form %}<!-- Bootstrapを適用したフォーム -->
-  {% if redirect_field_value %}
-  <input
-    type="hidden"
-    name="{{ redirect_field_name }}"
-    value="{{ redirect_field_value }}"
-  />
-  {% endif %}
-  <button type="submit" class="btn btn-lg btn-primary btn-block">
+      <div class="menu2">{% csrf_token %} {% bootstrap_form form %} すでにアカウントをお持ちですか？ <a href="{% url 'account_login' %}">ログインはこちら</a></div>
+
+          <button type="submit" class="btn btn-lg btn-primary btn-block">
     新規登録
   </button>
 </form>
-
-<script>
-  function toggleDivinerTypeVisibility() {
-    const userTypeSelect = document.getElementById("id_usertype");
-    const divinerTypeElement = document.getElementById("id_divinertype");
-    console.log(divinerTypeElement)
-    if (divinerTypeElement) {
-      divinerTypeElement.style.display  = userTypeSelect.value === "占い師" ? "block" : "none";
-    } else {
-        console.error('No element found with id id_divinertype');
+      </div>
+    </div>
+  </body>
+  <script>
+    function toggleDivinerTypeVisibility() {
+      const userTypeSelect = document.getElementById("id_usertype");
+      const divinerTypeElement = document.getElementById("id_divinertype");
+      console.log(divinerTypeElement);
+      if (divinerTypeElement) {
+        divinerTypeElement.style.display =
+          userTypeSelect.value === "占い師" ? "block" : "none";
+      } else {
+        console.error("No element found with id id_divinertype");
+      }
     }
-  }
 
-  // ページ読み込み時にusertypeの選択に応じてdivinertypeの表示・非表示を設定
-  window.onload = toggleDivinerTypeVisibility;
+    // ページ読み込み時にusertypeの選択に応じてdivinertypeの表示・非表示を設定
+    window.onload = toggleDivinerTypeVisibility;
 
-  // usertypeの選択が変更された際にもdivinertypeの表示・非表示を切り替える
-  document
-    .getElementById("id_usertype")
-    .addEventListener("change", toggleDivinerTypeVisibility);
-</script>
-
-
-<style>
-  .container-maxwidth {
-    margin-top: 70px; /* navbarの高さに応じて調整 */
-  }
-</style>
-{% endblock %}
+    // usertypeの選択が変更された際にもdivinertypeの表示・非表示を切り替える
+    document
+      .getElementById("id_usertype")
+      .addEventListener("change", toggleDivinerTypeVisibility);
+  </script>
+</html>
