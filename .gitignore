@@ -1,0 +1,11 @@
+# .gitignore
+
+# 他の無視するファイル/ディレクトリ
+
+# config/settings.py を無視
+config/settings.py
+
+
+# Python のコンパイル済みキャッシュファイル
+**/__pycache__/
+*.pyc
