@@ -190,6 +190,7 @@
     </div>
     <div class="chat-input-container">
       <form id="myForm" method="post" action="">
+        {% csrf_token %}
       <input id="chat-message-input" type="text" size="100" /><br />
        <img
             class="submit-button"
