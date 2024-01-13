@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost:8000","localhost","ik1-342-31112.vs.sakura.ne.jp","ik1-342-31112.vs.sakura.ne.jp","127.0.0.1"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,7 +55,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [("redis-server-name", 6379)],
         },
     },
 }

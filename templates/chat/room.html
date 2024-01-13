@@ -123,7 +123,7 @@
       }
     </style>
   </head>
-  <body style="--background-url: url('{% static 'image/チャット背景.png' %}')">
+   <body style="--background-url: url('{% static 'image/チャット背景.png' %}')">
     <div
       class="container"
     >
@@ -188,27 +188,21 @@
         {% endif %} {% endfor %}
       </div>
     </div>
-    <div class="chat-input-container">
-      <form id="myForm" method="post" action="">
-        {% csrf_token %}
-      <input id="chat-message-input" type="text" size="100" /><br />
-       <img
-            class="submit-button"
-            width="30"
-            height="30"
-            src="{% static 'image/送信.png' %}"
-            alt="送信"
-            onclick="submitForm()"
-          />
-        </form>
-    </div>
+    <input id="chat-message-input" type="text" size="100" /><br />
+    <input id="chat-message-submit" type="button" value="Send" />
     {{ room_name|json_script:"room-name" }} 
-    {{current_user_name|json_script:"current-user" }} 
-    {{friend_name|json_script:"friend" }}
+    {{ current_user_name|json_script:"current-user" }}
+    {{ friend_name|json_script:"friend" }}
     <script>
       const roomName = JSON.parse(
         document.getElementById("room-name").textContent
       );
+
+      const currentUser = JSON.parse(
+        document.getElementById("current-user").textContent
+      );
+
+      const friend = JSON.parse(document.getElementById("friend").textContent);
 
       const chatSocket = new WebSocket(
         "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
@@ -232,18 +226,6 @@
         }
       };
 
-      document.querySelector("#chat-message-submit").onclick = function (e) {
-        const messageInputDom = document.querySelector("#chat-message-input");
-        const message = messageInputDom.value;
-        chatSocket.send(
-          JSON.stringify({
-            message: message,
-            sender: "{{current_user_name}}",
-            receiver: "{{friend_name}}",
-          })
-        );
-        messageInputDom.value = "";
-      };
       function addMessageToContainer(description, isCurrentUser, userImgUrl) {
         // コンテナ要素を取得
         const container = document.querySelector(".container");
@@ -278,17 +260,18 @@
         container.appendChild(messageBox);
       }
 
-      window.onload = function () {
-        // すべてのリソースがロードされた後でスクロールするための遅延
-        setTimeout(function () {
-          window.scrollTo(0, document.body.scrollHeight);
-        }, 500); // 500ミリ秒後にスクロール
+      document.querySelector("#chat-message-submit").onclick = function (e) {
+        const messageInputDom = document.querySelector("#chat-message-input");
+        const message = messageInputDom.value;
+        chatSocket.send(
+          JSON.stringify({
+            message: message,
+            sender: currentUser,
+            receiver: friend,
+          })
+        );
+        messageInputDom.value = "";
       };
     </script>
-    <script>
-    function submitForm() {
-      document.getElementById("myForm").submit();
-    }
-  </script>
   </body>
 </html>

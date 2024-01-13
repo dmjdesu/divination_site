@@ -54,6 +54,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             receiver_name=receiver,
             receiver_id=receiver.id,
         )
+        print(message_object)
         await database_sync_to_async(message_object.save)()
 
         # WebSocketを通じてメッセージを送信
