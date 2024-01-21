@@ -149,10 +149,7 @@
       </div>
       <div class="scrollable-container">
         {% for following in friends %}
-        <a
-          class="truncate-text"
-          href="{% url 'get_message' following.username %}"
-        >
+        <a class="truncate-text" href="{% url 'room' following.username %}">
           <div
             class="message-box"
             style="

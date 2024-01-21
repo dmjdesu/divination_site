@@ -189,11 +189,14 @@
       </div>
     </div>
     <input id="chat-message-input" type="text" size="100" /><br />
-    <input id="chat-message-submit" type="button" value="Send" />
+    <img width="50px" height="50px" src="{% static 'image/送信.png' %}"  alt="Send" onclick="submitForm()" style="cursor: pointer;">
     {{ room_name|json_script:"room-name" }} 
     {{ current_user_name|json_script:"current-user" }}
     {{ friend_name|json_script:"friend" }}
     <script>
+      function submitForm() {
+          document.getElementById("myForm").submit();
+      }
       const roomName = JSON.parse(
         document.getElementById("room-name").textContent
       );
