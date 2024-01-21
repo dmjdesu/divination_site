@@ -1,0 +1,383 @@
+nohup: ignoring input
+2024-01-20 08:31:03,882 INFO     Starting server at tcp:port=8000:interface=127.0.0.1
+2024-01-20 08:31:03,882 INFO     HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+2024-01-20 08:31:03,883 INFO     Configuring endpoint tcp:port=8000:interface=127.0.0.1
+2024-01-20 08:31:03,883 CRITICAL Listen failure: Couldn't listen on 127.0Not Found: /Portal0000.htm
+2024-01-20 11:50:43,884 WARNING  Not Found: /Portal0000.htm
+Not Found: /VJlP
+2024-01-20 11:50:43,888 WARNING  Not Found: /VJlP
+Not Found: /home.html
+2024-01-20 11:50:43,889 WARNING  Not Found: /home.html
+Not Found: /Portal/Portal.mwsl
+2024-01-20 11:50:43,895 WARNING  Not Found: /Portal/Portal.mwsl
+Not Found: /sdk
+2024-01-20 11:50:43,895 WARNING  Not Found: /sdk
+Not Found: /.git/HEAD
+2024-01-20 11:50:43,896 WARNING  Not Found: /.git/HEAD
+Not Found: /CSS/Miniweb.css
+2024-01-20 11:50:43,896 WARNING  Not Found: /CSS/Miniweb.css
+Not Found: /nmaplowercheck1705751443
+2024-01-20 11:50:43,897 WARNING  Not Found: /nmaplowercheck1705751443
+Not Found: /__Additional
+2024-01-20 11:50:44,119 WARNING  Not Found: /__Additional
+Not Found: /main.aspx
+2024-01-20 11:50:44,121 WARNING  Not Found: /main.aspx
+Not Found: /docs/cplugError.html/
+2024-01-20 11:50:44,121 WARNING  Not Found: /docs/cplugError.html/
+Not Found: /pools/default/buckets
+2024-01-20 11:50:44,126 WARNING  Not Found: /pools/default/buckets
+Not Found: /scripts/WPnBr.dll
+2024-01-20 11:50:44,137 WARNING  Not Found: /scripts/WPnBr.dll
+Not Found: /HNAP1
+2024-01-20 11:50:44,145 WARNING  Not Found: /HNAP1
+Not Found: /pools
+2024-01-20 11:50:44,347 WARNING  Not Found: /pools
+Not Found: /home.shtml
+2024-01-20 11:50:44,351 WARNING  Not Found: /home.shtml
+Not Found: /favicon.ico
+2024-01-20 11:50:44,515 WARNING  Not Found: /favicon.ico
+Not Found: /start.jsa
+2024-01-20 11:50:44,523 WARNING  Not Found: /start.jsa
+Not Found: /localstart.shtml
+2024-01-20 11:50:44,700 WARNING  Not Found: /localstart.shtml
+Not Found: /indice.jsp
+2024-01-20 11:50:44,870 WARNING  Not Found: /indice.jsp
+Not Found: /indice.jhtml
+2024-01-20 11:50:45,069 WARNING  Not Found: /indice.jhtml
+Not Found: /start.html
+2024-01-20 11:50:45,227 WARNING  Not Found: /start.html
+Not Found: /admin.shtml
+2024-01-20 11:50:45,411 WARNING  Not Found: /admin.shtml
+Not Found: /start.cgi
+2024-01-20 11:50:45,583 WARNING  Not Found: /start.cgi
+Not Found: /admin.pl
+2024-01-20 11:50:45,761 WARNING  Not Found: /admin.pl
+Not Found: /index.html
+2024-01-20 11:50:45,941 WARNING  Not Found: /index.html
+Not Found: /menu.aspx
+2024-01-20 11:50:46,138 WARNING  Not Found: /menu.aspx
+Not Found: /start.pl
+2024-01-20 11:50:46,319 WARNING  Not Found: /start.pl
+Not Found: /index.jsp
+2024-01-20 11:50:46,494 WARNING  Not Found: /index.jsp
+Not Found: /admin.php
+2024-01-20 11:50:46,673 WARNING  Not Found: /admin.php
+Not Found: /admin.jsp
+2024-01-20 11:50:46,847 WARNING  Not Found: /admin.jsp
+Not Found: /admin.aspx
+2024-01-20 11:50:47,022 WARNING  Not Found: /admin.aspx
+Not Found: /base.jsp
+2024-01-20 11:50:47,184 WARNING  Not Found: /base.jsp
+Not Found: /index.shtml
+2024-01-20 11:50:47,362 WARNING  Not Found: /index.shtml
+Not Found: /admin.html
+2024-01-20 11:50:47,539 WARNING  Not Found: /admin.html
+Not Found: /admin.cgi
+2024-01-20 11:50:47,715 WARNING  Not Found: /admin.cgi
+Not Found: /readme.txt
+2024-01-20 11:50:47,888 WARNING  Not Found: /readme.txt
+Not Found: /admin.jsa
+2024-01-20 11:50:48,226 WARNING  Not Found: /admin.jsa
+Not Found: /start.shtml
+2024-01-20 11:50:48,404 WARNING  Not Found: /start.shtml
+Not Found: /menu.cfm
+2024-01-20 11:50:48,585 WARNING  Not Found: /menu.cfm
+Not Found: /admin.asp
+2024-01-20 11:50:48,762 WARNING  Not Found: /admin.asp
+Not Found: /inicio.shtml
+2024-01-20 11:50:48,942 WARNING  Not Found: /inicio.shtml
+Not Found: /base.pl
+2024-01-20 11:50:49,122 WARNING  Not Found: /base.pl
+Not Found: /base.cfm
+2024-01-20 11:50:49,297 WARNING  Not Found: /base.cfm
+Not Found: /base.php
+2024-01-20 11:50:49,474 WARNING  Not Found: /base.php
+Not Found: /menu.jsp
+2024-01-20 11:50:49,652 WARNING  Not Found: /menu.jsp
+Not Found: /start.php
+2024-01-20 11:50:49,828 WARNING  Not Found: /start.php
+Not Found: /main.php
+2024-01-20 11:50:50,008 WARNING  Not Found: /main.php
+Not Found: /localstart.jsp
+2024-01-20 11:50:50,200 WARNING  Not Found: /localstart.jsp
+Not Found: /admin.jhtml
+2024-01-20 11:50:50,378 WARNING  Not Found: /admin.jhtml
+Not Found: /base.jsa
+2024-01-20 11:50:50,554 WARNING  Not Found: /base.jsa
+Not Found: /default.cgi
+2024-01-20 11:50:50,731 WARNING  Not Found: /default.cgi
+Not Found: /base.inc
+2024-01-20 11:50:50,910 WARNING  Not Found: /base.inc
+Not Found: /main.jsa
+2024-01-20 11:50:51,084 WARNING  Not Found: /main.jsa
+Not Found: /main.asp
+2024-01-20 11:50:51,262 WARNING  Not Found: /main.asp
+Not Found: /index.jsa
+2024-01-20 11:50:51,436 WARNING  Not Found: /index.jsa
+Not Found: /base.cgi
+2024-01-20 11:50:51,611 WARNING  Not Found: /base.cgi
+Not Found: /base.aspx
+2024-01-20 11:50:51,791 WARNING  Not Found: /base.aspx
+Not Found: /inicio.php
+2024-01-20 11:50:51,967 WARNING  Not Found: /inicio.php
+Not Found: /main.pl
+2024-01-20 11:50:52,145 WARNING  Not Found: /main.pl
+Not Found: /localstart.aspx
+2024-01-20 11:50:52,319 WARNING  Not Found: /localstart.aspx
+Not Found: /default.jsp
+2024-01-20 11:50:52,485 WARNING  Not Found: /default.jsp
+Not Found: /indice.cfm
+2024-01-20 11:50:52,659 WARNING  Not Found: /indice.cfm
+Not Found: /base.shtml
+2024-01-20 11:50:52,832 WARNING  Not Found: /base.shtml
+Not Found: /home.jsp
+2024-01-20 11:50:53,010 WARNING  Not Found: /home.jsp
+Not Found: /menu.php
+2024-01-20 11:50:53,191 WARNING  Not Found: /menu.php
+Not Found: /indice.php
+2024-01-20 11:50:53,367 WARNING  Not Found: /indice.php
+Not Found: /default.cfm
+2024-01-20 11:50:53,543 WARNING  Not Found: /default.cfm
+Not Found: /robots.txt
+2024-01-20 11:50:53,724 WARNING  Not Found: /robots.txt
+Not Found: /home.cgi
+2024-01-20 11:50:53,871 WARNING  Not Found: /home.cgi
+Not Found: /inicio.jsa
+2024-01-20 11:50:53,955 WARNING  Not Found: /inicio.jsa
+Not Found: /start.aspx
+2024-01-20 11:50:54,032 WARNING  Not Found: /start.aspx
+Not Found: /inicio.jsp
+2024-01-20 11:50:54,111 WARNING  Not Found: /inicio.jsp
+Not Found: /index.aspx
+2024-01-20 11:50:54,183 WARNING  Not Found: /index.aspx
+Not Found: /index.jhtml
+2024-01-20 11:50:54,306 WARNING  Not Found: /index.jhtml
+zirou
+chat_messages
+127.0.0.1:40264 - - [20/Jan/2024:08:31:07] "GET /chats/zirou/" 200 9237
+127.0.0.1:40272 - - [20/Jan/2024:08:31:07] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:40272 - - [20/Jan/2024:08:31:07] "WSCONNECT /ws/chat/zirou/" - -
+{'type': 'chat_message', 'message': 'ss', 'sender': 'gorou', 'receiver': 'zirou'}
+Messages object (None)
+127.0.0.1:40272 - - [20/Jan/2024:08:31:18] "WSDISCONNECT /ws/chat/zirou/" - -
+zirou
+chat_messages
+127.0.0.1:43026 - - [20/Jan/2024:09:44:09] "GET /chats/zirou/" 200 9731
+127.0.0.1:43032 - - [20/Jan/2024:09:44:09] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:43032 - - [20/Jan/2024:09:44:09] "WSCONNECT /ws/chat/zirou/" - -
+127.0.0.1:43032 - - [20/Jan/2024:09:44:20] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:50166 - - [20/Jan/2024:09:50:00] "GET /" 200 8005
+127.0.0.1:33778 - - [20/Jan/2024:11:50:43] "GET /" 302 -
+127.0.0.1:33804 - - [20/Jan/2024:11:50:43] "GET /?=PHPE9568F36-D428-11d2-A769-00AA001ACF42" 302 -
+127.0.0.1:33798 - - [20/Jan/2024:11:50:43] "GET /Portal0000.htm" 404 5012
+127.0.0.1:33784 - - [20/Jan/2024:11:50:43] "GET /VJlP" 404 4982
+127.0.0.1:33782 - - [20/Jan/2024:11:50:43] "GET /home.html" 404 4997
+127.0.0.1:33820 - - [20/Jan/2024:11:50:43] "GET /Portal/Portal.mwsl" 404 5024
+127.0.0.1:33842 - - [20/Jan/2024:11:50:43] "POST /sdk" 404 4980
+127.0.0.1:33862 - - [20/Jan/2024:11:50:43] "GET /.git/HEAD" 404 4997
+127.0.0.1:33826 - - [20/Jan/2024:11:50:43] "GET /CSS/Miniweb.css" 404 5015
+127.0.0.1:33856 - - [20/Jan/2024:11:50:43] "GET /nmaplowercheck1705751443" 404 5042
+127.0.0.1:33866 - - [20/Jan/2024:11:50:44] "GET /accounts/login/?next=/%3F%3DPHPE9568F36-D428-11d2-A769-00AA001ACF42" 200 8911
+127.0.0.1:33870 - - [20/Jan/2024:11:50:44] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:33884 - - [20/Jan/2024:11:50:44] "GET /" 302 -
+127.0.0.1:33902 - - [20/Jan/2024:11:50:44] "GET /__Additional" 404 5006
+127.0.0.1:33894 - - [20/Jan/2024:11:50:44] "GET /main.aspx" 404 4997
+127.0.0.1:33924 - - [20/Jan/2024:11:50:44] "GET /docs/cplugError.html/" 404 5033
+127.0.0.1:33908 - - [20/Jan/2024:11:50:44] "GET /pools/default/buckets" 404 5033
+127.0.0.1:33936 - - [20/Jan/2024:11:50:44] "POST /scripts/WPnBr.dll" 404 5022
+127.0.0.1:33942 - - [20/Jan/2024:11:50:44] "GET /" 302 -
+127.0.0.1:33950 - - [20/Jan/2024:11:50:44] "GET /HNAP1" 404 4985
+127.0.0.1:33956 - - [20/Jan/2024:11:50:44] "GET /?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000" 302 -
+127.0.0.1:33958 - - [20/Jan/2024:11:50:44] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:33996 - - [20/Jan/2024:11:50:44] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:33990 - - [20/Jan/2024:11:50:44] "GET /pools" 404 4985
+127.0.0.1:33974 - - [20/Jan/2024:11:50:44] "GET /home.shtml" 404 5000
+127.0.0.1:34000 - - [20/Jan/2024:11:50:44] "GET /accounts/login/?next=/%3F%3DPHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000" 200 8911
+127.0.0.1:34006 - - [20/Jan/2024:11:50:44] "GET /favicon.ico" 404 5003
+127.0.0.1:34012 - - [20/Jan/2024:11:50:44] "HEAD /" 302 -
+127.0.0.1:34004 - - [20/Jan/2024:11:50:44] "GET /start.jsa" 404 4997
+127.0.0.1:34022 - - [20/Jan/2024:11:50:44] "GET /localstart.shtml" 404 5018
+127.0.0.1:34028 - - [20/Jan/2024:11:50:44] "HEAD /accounts/login/?next=/" 200 -
+127.0.0.1:34036 - - [20/Jan/2024:11:50:44] "GET /" 302 -
+127.0.0.1:34038 - - [20/Jan/2024:11:50:44] "GET /indice.jsp" 404 5000
+127.0.0.1:34050 - - [20/Jan/2024:11:50:45] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:34064 - - [20/Jan/2024:11:50:45] "GET /indice.jhtml" 404 5006
+127.0.0.1:34072 - - [20/Jan/2024:11:50:45] "GET /start.html" 404 5000
+127.0.0.1:33802 - - [20/Jan/2024:11:50:45] "GET /admin.shtml" 404 5003
+127.0.0.1:33812 - - [20/Jan/2024:11:50:45] "GET /start.cgi" 404 4997
+127.0.0.1:33820 - - [20/Jan/2024:11:50:45] "GET /admin.pl" 404 4994
+127.0.0.1:33828 - - [20/Jan/2024:11:50:45] "GET /index.html" 404 5000
+127.0.0.1:33838 - - [20/Jan/2024:11:50:46] "GET /menu.aspx" 404 4997
+127.0.0.1:33842 - - [20/Jan/2024:11:50:46] "GET /start.pl" 404 4994
+127.0.0.1:33846 - - [20/Jan/2024:11:50:46] "GET /index.jsp" 404 4997
+127.0.0.1:33856 - - [20/Jan/2024:11:50:46] "GET /admin.php" 404 4997
+127.0.0.1:33860 - - [20/Jan/2024:11:50:46] "GET /admin.jsp" 404 4997
+127.0.0.1:33870 - - [20/Jan/2024:11:50:47] "GET /admin.aspx" 404 5000
+127.0.0.1:33872 - - [20/Jan/2024:11:50:47] "GET /base.jsp" 404 4994
+127.0.0.1:33876 - - [20/Jan/2024:11:50:47] "GET /index.shtml" 404 5003
+127.0.0.1:33884 - - [20/Jan/2024:11:50:47] "GET /admin.html" 404 5000
+127.0.0.1:33894 - - [20/Jan/2024:11:50:47] "GET /admin.cgi" 404 4997
+127.0.0.1:33900 - - [20/Jan/2024:11:50:47] "GET /readme.txt" 404 5000
+127.0.0.1:33908 - - [20/Jan/2024:11:50:48] "GET /admin.jsa" 404 4997
+127.0.0.1:33916 - - [20/Jan/2024:11:50:48] "GET /start.shtml" 404 5003
+127.0.0.1:33922 - - [20/Jan/2024:11:50:48] "GET /menu.cfm" 404 4994
+127.0.0.1:33930 - - [20/Jan/2024:11:50:48] "GET /admin.asp" 404 4997
+127.0.0.1:33946 - - [20/Jan/2024:11:50:48] "GET /inicio.shtml" 404 5006
+127.0.0.1:33960 - - [20/Jan/2024:11:50:49] "GET /base.pl" 404 4991
+127.0.0.1:33966 - - [20/Jan/2024:11:50:49] "GET /base.cfm" 404 4994
+127.0.0.1:33972 - - [20/Jan/2024:11:50:49] "GET /base.php" 404 4994
+127.0.0.1:33988 - - [20/Jan/2024:11:50:49] "GET /menu.jsp" 404 4994
+127.0.0.1:34000 - - [20/Jan/2024:11:50:49] "GET /start.php" 404 4997
+127.0.0.1:34006 - - [20/Jan/2024:11:50:50] "GET /main.php" 404 4994
+127.0.0.1:34012 - - [20/Jan/2024:11:50:50] "GET /localstart.jsp" 404 5012
+127.0.0.1:34022 - - [20/Jan/2024:11:50:50] "GET /admin.jhtml" 404 5003
+127.0.0.1:34038 - - [20/Jan/2024:11:50:50] "GET /base.jsa" 404 4994
+127.0.0.1:34048 - - [20/Jan/2024:11:50:50] "GET /default.cgi" 404 5003
+127.0.0.1:34052 - - [20/Jan/2024:11:50:50] "GET /base.inc" 404 4994
+127.0.0.1:34054 - - [20/Jan/2024:11:50:51] "GET /main.jsa" 404 4994
+127.0.0.1:34064 - - [20/Jan/2024:11:50:51] "GET /main.asp" 404 4994
+127.0.0.1:34070 - - [20/Jan/2024:11:50:51] "GET /index.jsa" 404 4997
+127.0.0.1:34072 - - [20/Jan/2024:11:50:51] "GET /base.cgi" 404 4994
+127.0.0.1:34074 - - [20/Jan/2024:11:50:51] "GET /base.aspx" 404 4997
+127.0.0.1:34084 - - [20/Jan/2024:11:50:51] "GET /inicio.php" 404 5000
+127.0.0.1:34086 - - [20/Jan/2024:11:50:52] "GET /main.pl" 404 4991
+127.0.0.1:34102 - - [20/Jan/2024:11:50:52] "GET /localstart.aspx" 404 5015
+127.0.0.1:34112 - - [20/Jan/2024:11:50:52] "GET /default.jsp" 404 5003
+127.0.0.1:34118 - - [20/Jan/2024:11:50:52] "GET /indice.cfm" 404 5000
+127.0.0.1:34120 - - [20/Jan/2024:11:50:52] "GET /base.shtml" 404 5000
+127.0.0.1:34122 - - [20/Jan/2024:11:50:53] "GET /home.jsp" 404 4994
+127.0.0.1:34134 - - [20/Jan/2024:11:50:53] "GET /menu.php" 404 4994
+127.0.0.1:34148 - - [20/Jan/2024:11:50:53] "GET /indice.php" 404 5000
+127.0.0.1:34154 - - [20/Jan/2024:11:50:53] "GET /default.cfm" 404 5003
+127.0.0.1:34166 - - [20/Jan/2024:11:50:53] "GET /robots.txt" 404 5000
+127.0.0.1:34170 - - [20/Jan/2024:11:50:53] "GET /home.cgi" 404 4994
+127.0.0.1:34172 - - [20/Jan/2024:11:50:53] "GET /inicio.jsa" 404 5000
+127.0.0.1:34176 - - [20/Jan/2024:11:50:54] "GET /start.aspx" 404 5000
+127.0.0.1:34184 - - [20/Jan/2024:11:50:54] "GET /inicio.jsp" 404 5000
+127.0.0.1:34198 - - [20/Jan/2024:11:50:54] "GET /index.aspx" 404 5000
+127.0.0.1:34200 - - [20/Jan/2024:11:50:54] "GET /index.jhtml" 404 5003
+127.0.0.1:34210 - - [20/Jan/2024:11:50:54] "GET /" 302 -
+127.0.0.1:38148 - - [20/Jan/2024:14:17:14] "GET /admin/" 302 -
+127.0.0.1:38158 - - [20/Jan/2024:14:17:14] "GET /admin/login/?next=/admin/" 200 4305
+zirou
+chat_messages
+127.0.0.1:40000 - - [20/Jan/2024:14:17:18] "GET /chats/zirou/" 200 9731
+127.0.0.1:40010 - - [20/Jan/2024:14:17:18] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:40010 - - [20/Jan/2024:14:17:18] "WSCONNECT /ws/chat/zirou/" - -
+127.0.0.1:40010 - - [20/Jan/2024:14:22:05] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:38556 - - [20/Jan/2024:17:13:54] "GET /admin/" 302 -
+127.0.0.1:38558 - - [20/Jan/2024:17:13:54] "GET /admin/snsapp/config/" 302 -
+127.0.0.1:38566 - - [20/Jan/2024:17:13:54] "GET /admin/login/?next=/admin/" 200 4297
+127.0.0.1:38576 - - [20/Jan/2024:17:13:54] "GET /admin/login/?next=/admin/snsapp/config/" 200 4325
+127.0.0.1:39834 - - [20/Jan/2024:20:49:58] "GET /" 200 8005
+Not Found: /favicon.ico
+2024-01-21 01:48:34,649 WARNING  Not Found: /favicon.ico
+Not Found: /favicon.ico
+2024-01-21 01:49:13,576 WARNING  Not Found: /favicon.ico
+Not Found: /favicon.ico
+2024-01-21 01:53:10,823 WARNING  Not Found: /favicon.ico
+Not Found: /favicon.ico
+2024-01-21 01:53:16,829 WARNING  Not Found: /favicon.ico
+Not Found: /diviner/16/waku.png
+2024-01-21 01:53:56,842 WARNING  Not Found: /diviner/16/waku.png
+Not Found: /diviner/16/yuuyake.jpeg
+2024-01-21 01:53:56,979 WARNING  Not Found: /diviner/16/yuuyake.jpeg
+Not Found: /favicon.ico
+2024-01-21 04:41:06,325 WARNING  Not Found: /favicon.ico
+Not Found: /favicon.ico
+2024-01-21 04:41:31,450 WARNING  Not Found: /favicon.ico
+Not Found: /favicon.ico
+2024-01-21 04:46:43,285 WARNING  Not Found: /favicon.ico
+2024-01-21 04:50:34,454 INFO     Killed 0 pending application instances
+127.0.0.1:48304 - - [21/Jan/2024:01:48:12] "GET /accounts/signup/" 200 10806
+127.0.0.1:60070 - - [21/Jan/2024:01:48:32] "GET /admin/snsapp/config/" 302 -
+127.0.0.1:60078 - - [21/Jan/2024:01:48:33] "GET /admin/snsapp/config/" 302 -
+127.0.0.1:60094 - - [21/Jan/2024:01:48:33] "GET /admin/login/?next=/admin/snsapp/config/" 200 4325
+127.0.0.1:60110 - - [21/Jan/2024:01:48:33] "GET /admin/login/?next=/admin/snsapp/config/" 200 4325
+127.0.0.1:60118 - - [21/Jan/2024:01:48:34] "GET /favicon.ico" 404 5003
+127.0.0.1:60082 - - [21/Jan/2024:01:49:12] "GET /admin/login/?next=/admin/snsapp/config/" 200 4325
+127.0.0.1:60090 - - [21/Jan/2024:01:49:13] "GET /favicon.ico" 404 5003
+127.0.0.1:55892 - - [21/Jan/2024:01:49:38] "POST /admin/login/?next=/admin/snsapp/config/" 302 -
+127.0.0.1:55904 - - [21/Jan/2024:01:49:38] "GET /admin/snsapp/config/" 200 12817
+127.0.0.1:55908 - - [21/Jan/2024:01:49:38] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:40262 - - [21/Jan/2024:01:49:50] "GET /admin/snsapp/connection/" 200 17242
+127.0.0.1:40278 - - [21/Jan/2024:01:49:50] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:55724 - - [21/Jan/2024:01:49:58] "GET /admin/snsapp/cost/" 200 14221
+127.0.0.1:55730 - - [21/Jan/2024:01:49:58] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:55738 - - [21/Jan/2024:01:50:02] "GET /admin/snsapp/divinertype/" 200 18671
+127.0.0.1:55750 - - [21/Jan/2024:01:50:02] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:53162 - - [21/Jan/2024:01:50:06] "GET /admin/account/emailaddress/" 200 20349
+127.0.0.1:53174 - - [21/Jan/2024:01:50:07] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38812 - - [21/Jan/2024:01:50:15] "GET /admin/snsapp/config/" 200 12817
+127.0.0.1:38826 - - [21/Jan/2024:01:50:15] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38838 - - [21/Jan/2024:01:50:18] "GET /admin/snsapp/config/add/" 200 15051
+127.0.0.1:38850 - - [21/Jan/2024:01:50:18] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38852 - - [21/Jan/2024:01:50:21] "GET /admin/snsapp/connection/" 200 17242
+127.0.0.1:38864 - - [21/Jan/2024:01:50:21] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38158 - - [21/Jan/2024:01:50:25] "GET /admin/snsapp/cost/" 200 14221
+127.0.0.1:38168 - - [21/Jan/2024:01:50:25] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38180 - - [21/Jan/2024:01:50:28] "GET /admin/snsapp/divinertype/" 200 18671
+127.0.0.1:38196 - - [21/Jan/2024:01:50:28] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38202 - - [21/Jan/2024:01:50:30] "GET /admin/snsapp/profile/" 200 18079
+127.0.0.1:38216 - - [21/Jan/2024:01:50:31] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38306 - - [21/Jan/2024:01:50:35] "GET /admin/shopping/transaction/" 200 12860
+127.0.0.1:38308 - - [21/Jan/2024:01:50:36] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38316 - - [21/Jan/2024:01:50:37] "GET /admin/shopping/product/" 200 14245
+127.0.0.1:38330 - - [21/Jan/2024:01:50:38] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:34262 - - [21/Jan/2024:01:50:51] "GET /admin/snsapp/config/" 200 12817
+127.0.0.1:34272 - - [21/Jan/2024:01:50:51] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:57708 - - [21/Jan/2024:01:50:56] "GET /admin/snsapp/config/add/" 200 15051
+127.0.0.1:57720 - - [21/Jan/2024:01:50:56] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:35678 - - [21/Jan/2024:01:51:18] "POST /admin/snsapp/config/add/" 200 15227
+127.0.0.1:35688 - - [21/Jan/2024:01:51:18] "GET /admin/jsi18n/" 200 9739
+127.0.0.1:38278 - - [21/Jan/2024:01:53:03] "GET /" 302 -
+127.0.0.1:38282 - - [21/Jan/2024:01:53:03] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:48230 - - [21/Jan/2024:01:53:09] "GET /accounts/signup/" 200 10806
+127.0.0.1:48246 - - [21/Jan/2024:01:53:10] "GET /favicon.ico" 404 5003
+127.0.0.1:35524 - - [21/Jan/2024:01:53:16] "GET /" 302 -
+127.0.0.1:35532 - - [21/Jan/2024:01:53:16] "GET /accounts/login/?next=/" 200 8866
+127.0.0.1:35536 - - [21/Jan/2024:01:53:16] "GET /favicon.ico" 404 5003
+127.0.0.1:47902 - - [21/Jan/2024:01:53:26] "POST /accounts/login/" 200 9074
+127.0.0.1:53726 - - [21/Jan/2024:01:53:38] "POST /accounts/login/" 302 -
+127.0.0.1:53736 - - [21/Jan/2024:01:53:38] "GET /" 200 8005
+friends
+<QuerySet []>
+127.0.0.1:32876 - - [21/Jan/2024:01:53:47] "GET /search/" 200 5509
+127.0.0.1:32880 - - [21/Jan/2024:01:53:52] "GET /mydiviner/" 200 14624
+127.0.0.1:32900 - - [21/Jan/2024:01:53:52] "GET /media/images/16%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88.png" 200 273619
+127.0.0.1:32884 - - [21/Jan/2024:01:53:52] "GET /media/images/5%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88.jpeg" 200 2010759
+127.0.0.1:49754 - - [21/Jan/2024:01:53:56] "GET /diviner/16/" 200 8038
+127.0.0.1:49768 - - [21/Jan/2024:01:53:56] "GET /diviner/16/waku.png" 404 5027
+127.0.0.1:49776 - - [21/Jan/2024:01:53:56] "GET /diviner/16/yuuyake.jpeg" 404 5039
+zirou
+chat_messages
+127.0.0.1:35120 - - [21/Jan/2024:04:41:04] "GET /chats/zirou/" 200 9731
+127.0.0.1:35130 - - [21/Jan/2024:04:41:04] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:35130 - - [21/Jan/2024:04:41:04] "WSCONNECT /ws/chat/zirou/" - -
+127.0.0.1:41224 - - [21/Jan/2024:04:41:06] "GET /favicon.ico" 404 5003
+{'type': 'chat_message', 'message': 'ss', 'sender': 'gorou', 'receiver': 'zirou'}
+Messages object (None)
+127.0.0.1:35130 - - [21/Jan/2024:04:41:15] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:37254 - - [21/Jan/2024:04:41:18] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:37254 - - [21/Jan/2024:04:41:18] "WSCONNECT /ws/chat/zirou/" - -
+zirou
+chat_messages
+127.0.0.1:37264 - - [21/Jan/2024:04:41:21] "GET /chats/zirou/" 200 10225
+127.0.0.1:37254 - - [21/Jan/2024:04:41:22] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:37270 - - [21/Jan/2024:04:41:22] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:37270 - - [21/Jan/2024:04:41:22] "WSCONNECT /ws/chat/zirou/" - -
+zirou
+chat_messages
+127.0.0.1:53980 - - [21/Jan/2024:04:41:30] "GET /chats/zirou/" 200 10225
+127.0.0.1:37270 - - [21/Jan/2024:04:41:30] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:53982 - - [21/Jan/2024:04:41:30] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:53982 - - [21/Jan/2024:04:41:30] "WSCONNECT /ws/chat/zirou/" - -
+127.0.0.1:53992 - - [21/Jan/2024:04:41:31] "GET /favicon.ico" 404 5003
+127.0.0.1:48284 - - [21/Jan/2024:04:44:01] "GET /" 200 8005
+127.0.0.1:53982 - - [21/Jan/2024:04:44:01] "WSDISCONNECT /ws/chat/zirou/" - -
+127.0.0.1:48988 - - [21/Jan/2024:04:44:06] "GET /" 200 8005
+127.0.0.1:49174 - - [21/Jan/2024:04:46:37] "GET /" 200 8005
+127.0.0.1:49178 - - [21/Jan/2024:04:46:40] "GET /" 200 8005
+127.0.0.1:49194 - - [21/Jan/2024:04:46:43] "GET /favicon.ico" 404 5003
+127.0.0.1:39970 - - [21/Jan/2024:04:49:48] "GET /" 200 8005
+127.0.0.1:39978 - - [21/Jan/2024:04:49:49] "GET /" 200 8005

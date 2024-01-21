@@ -1,0 +1,13 @@
+2024-01-20 08:28:56,641 INFO     Starting server at tcp:port=8000:interface=127.0.0.1
+2024-01-20 08:28:56,641 INFO     HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+2024-01-20 08:28:56,641 INFO     Configuring endpoint tcp:port=8000:interface=127.0.0.1
+2024-01-20 08:28:56,642 INFO     Listening on TCP address 127.0.0.1:8000
+2024-01-20 08:30:58,659 INFO     Killed 1 pending application instances
+zirou
+chat_messages
+127.0.0.1:60510 - - [20/Jan/2024:08:29:03] "GET /chats/zirou/" 200 8743
+127.0.0.1:60522 - - [20/Jan/2024:08:29:04] "WSCONNECTING /ws/chat/zirou/" - -
+127.0.0.1:60522 - - [20/Jan/2024:08:29:04] "WSCONNECT /ws/chat/zirou/" - -
+{'type': 'chat_message', 'message': 'ss', 'sender': 'gorou', 'receiver': 'zirou'}
+Messages object (None)
+127.0.0.1:60522 - - [20/Jan/2024:08:30:58] "WSDISCONNECT /ws/chat/zirou/" - -
