@@ -213,8 +213,13 @@
 
       chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        console.log(data);
-        addMessageToContainer(data.message, true, "{{current_user_img}}");
+        if (data.error) {
+          // エラーメッセージを表示する処理
+          window.location.href = "{% url 'product-top-page' %}";// 例: アラートでエラーを表示
+        } else {
+          // メッセージをコンテナに追加
+          addMessageToContainer(data.message, true, "{{current_user_img}}");
+        }
       };
 
       chatSocket.onclose = function (e) {
