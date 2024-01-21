@@ -171,10 +171,9 @@ class DivinerDetail(LoginRequiredMixin,DetailView, ProcessFormView):
                 connection.follow(user)
                 # Optionally, you might want to send a success message for the following action too
                 messages.success(request, f'You are now following {user.username}.')
-
-            action_label = "send"
-
-            result = deduct_points(user, action_label)
+            if user.usertype == "顧客":
+                action_label = "send"
+                result = deduct_points(user, action_label)
 
             # エラー処理
             if "error" in result:
@@ -284,9 +283,6 @@ class SearchUser(LoginRequiredMixin, View):
 
         friends = getFriendsList(self)
 
-        print("friends")
-        print(friends)
-       
         return render(request, "search.html", {'users': user_list, 'friends': friends,'point':self.request.user.points})
 
 class Message(LoginRequiredMixin, View):
