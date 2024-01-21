@@ -146,6 +146,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = "/var/www/ik1-342-31112.vs.sakura.ne.jp/html/"
 
 MEDIA_URL = '/media/'
 if DEBUG:
