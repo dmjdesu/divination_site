@@ -421,7 +421,7 @@
         <div class="modal-body">{{account_deletion}}</div>
         <div class="modal-footer">
           <button id="yes-button" class="button">YES</button>
-          <button class="button no-button">NO</button>
+          <button id="no-button" class="button no-button">NO</button>
         </div>
       </div>
     </div>
@@ -547,6 +547,8 @@
     // 閉じるボタンを取得
     var span2 = document.getElementsByClassName("close2")[0];
 
+    var noButton = document.getElementsByClassName("no-button")[0];
+
     // モーダルを取得
     var modal3 = document.getElementById("myModal3");
 
@@ -619,6 +621,10 @@
     // 閉じるボタンをクリックしたらモーダルを非表示
     span2.onclick = function () {
       modal2.style.display = "none";
+    };
+
+    noButton.onclick = function () {
+      modal3.style.display = "none";
     };
 
     // ボタンをクリックしたらモーダルを表示
