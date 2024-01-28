@@ -95,10 +95,14 @@
       .section.special-background {
         height: 200px;
         background-image: var(--background-url);
-        background-size: 60% auto;
+        background-size: 600px auto;
         background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
         background-position: center; /* 画像を中央に配置する */
         color: white; /* 文字色を白に設定 */
+      }
+
+      .section-detail {
+        margin-top: 40px;
       }
 
       .footer-icons {
@@ -224,21 +228,11 @@
       </div>
 
       <div class="content">
-        <div class="rating">
-          <img
-            width="30"
-            height="30"
-            src="{% static 'image/星.png' %}"
-            alt="カスタムアイコンの説明"
-          />
-          4.5
-        </div>
-
         <div
           class="section special-background"
           style="--background-url: url('{% static 'image/占い.png' %}')"
         >
-          {{divinertype_display}}
+          <p class="section-detail">{{divinertype_display}}</p>
         </div>
         <div class="footer-icons">
           <img src="{% static 'image/今すぐチャット.png' %}" alt="メッセージ" />

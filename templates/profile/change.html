@@ -215,7 +215,6 @@
         padding: 10px; /* パディング */
       }
       .profile-section {
-        width: 800px; /* 横幅を300pxに設定 */
         margin: 0 auto; /* 上下のマージンを0にし、左右のマージンを自動調整 */
         height: auto; /* 高さを自動調整 */
         margin-top: 50px;
@@ -378,6 +377,7 @@
         </button>
       </div>
     </div>
+    {% include '_footer.html' %}
     <div id="myModal" class="modal">
       <!-- モーダルコンテンツ -->
       <div class="modal-content">
@@ -526,7 +526,6 @@
         <div class="modal-body">{{spec_com_trans_law}}</div>
       </div>
     </div>
-    {% include '_footer.html' %}
   </body>
   <script>
     // モーダルを取得
