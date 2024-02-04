@@ -184,6 +184,8 @@ class DivinerDetail(LoginRequiredMixin,DetailView, ProcessFormView):
             message = Messages(
                 description=message,
                 sender_name=sender,
+                sender_id=sender.id,
+                receiver_id=receiver.id,
                 receiver_name=receiver
             )
             message.save()

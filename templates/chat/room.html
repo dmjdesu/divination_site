@@ -164,14 +164,13 @@
           --background-url: url('{% static 'image/テキストボックス.png' %}');
         "
       >
-        {% if current_user_img %}
+        {% if friend_img %}
         <div
           class="badge badge-left"
-          style="--background-url: url('{{current_user_img}}')"
         ></div>
         <img
           width="100px"
-          src="{{ current_user_img }}"
+          src="{{ friend_img }}"
           alt="カスタムアイコンの説明"
           class="custom-icon-left"
         />
