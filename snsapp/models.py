@@ -94,7 +94,7 @@ class Config(models.Model):
     ]
 
     key = models.CharField(max_length=50, choices=SETTING_CHOICES, unique=True, primary_key=True)
-    value = models.CharField(max_length=255)
+    value = models.TextField() 
 
     def __str__(self):
         return self.get_key_display()
