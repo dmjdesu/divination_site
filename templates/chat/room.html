@@ -189,7 +189,7 @@
       </div>
     </div>
     <input id="chat-message-input" type="text" size="100" /><br />
-    <img width="50px" height="50px" src="{% static 'image/送信.png' %}"  alt="Send" onclick="submitForm()" style="cursor: pointer;">
+    <img id="chat-message-submit" width="50px" height="50px" src="{% static 'image/送信.png' %}"  alt="Send" onclick="submitForm()" style="cursor: pointer;">
     {{ room_name|json_script:"room-name" }} 
     {{ current_user_name|json_script:"current-user" }}
     {{ friend_name|json_script:"friend" }}
@@ -215,6 +215,8 @@
         const data = JSON.parse(e.data);
         if (data.error) {
           // エラーメッセージを表示する処理
+          console.log("data.error");
+          console.log(data.error);
           window.location.href = "{% url 'product-top-page' %}";// 例: アラートでエラーを表示
         } else {
           // メッセージをコンテナに追加

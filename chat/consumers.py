@@ -44,7 +44,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = await database_sync_to_async(User.objects.get)(username=username)
         cost = await database_sync_to_async(Cost.objects.get)(label="send")
 
-        user.point -= cost.point  # ポイントを1減らす
+        user.points -= cost.point  # ポイントを1減らす
         await database_sync_to_async(user.save)()  # 変更を保存
 
     async def chat_message(self, event):

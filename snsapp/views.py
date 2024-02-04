@@ -174,11 +174,11 @@ class DivinerDetail(LoginRequiredMixin,DetailView, ProcessFormView):
             if user.usertype == "顧客":
                 action_label = "send"
                 result = deduct_points(user, action_label)
-
-            # エラー処理
-            if "error" in result:
-                # エラーメッセージを表示
-                return render(request, "error.html", {"error_message": result["error"]})
+                # エラー処理
+                if "error" in result:
+                    # エラーメッセージを表示
+                    return render(request, "error.html", {"error_message": result["error"]})
+            
 
             # メッセージオブジェクトを作成し、保存します
             message = Messages(
@@ -377,6 +377,7 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(userPro=self.request.user)
         context['username'] = self.request.user.username
+        context['usertype'] = self.request.user.usertype
         context['email'] = profile.userPro.email
         context['message_count'] = Messages.objects.filter(sender_name=self.request.user).count()
         context["product_list"] = Product.objects.all()
