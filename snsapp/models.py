@@ -139,6 +139,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 'nickName': profile.nickName,
                 'created_on': profile.created_on,
                 'img': profile.img.url if profile.img else None,  # imgフィールドが空の場合を考慮
+                'introduction':  profile.introduction,  # 自己紹介フィールドを追加
             }
         except:
             return None  # もしくは {} など、関連するProfileが存在しない場合の返り値を定義
@@ -152,6 +153,7 @@ class Profile(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     img = models.ImageField(blank=True, null=True, upload_to=upload_path)
     receive_newsletter = models.BooleanField(default=False)  # メールマガジン受信フラグ
+    introduction = models.TextField(blank=True, null=True)  # 自己紹介
 
     def __str__(self):
         return self.nickName
