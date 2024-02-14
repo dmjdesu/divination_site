@@ -360,6 +360,7 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         initial = super().get_initial()
         profile, created = Profile.objects.get_or_create(userPro=self.request.user, defaults={'nickName': 'デフォルトユーザー'})
         initial['img'] = profile.img
+        initial['introduction'] = profile.introduction
         return initial
     
     def form_valid(self, form):
@@ -383,6 +384,7 @@ class ProfileChangeView(LoginRequiredMixin, FormView):
         context['email'] = profile.userPro.email
         context['message_count'] = Messages.objects.filter(sender_name=self.request.user).count()
         context["product_list"] = Product.objects.all()
+        context["introduction"] = profile.introduction
 
         context["point"] = self.request.user.points
 

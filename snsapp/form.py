@@ -73,31 +73,37 @@ class ProfileChangeForm(ModelForm):
         fields = [
             'nickName',
             'img',
-            'receive_newsletter'
+            'receive_newsletter',
+            'introduction'
         ]
 
-    def __init__(self, nickName=None,img=None,receive_newsletter=None, *args, **kwargs):
+    def __init__(self, nickName=None,img=None,receive_newsletter=None, introduction=None, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
         super().__init__(*args, **kwargs)
         # 各フィールドのカスタムラベルを設定
         self.fields['nickName'].label = "ニックネーム"
         self.fields['img'].label = "画像"
         self.fields['receive_newsletter'].label = "メールマガジンを受信する"
+        self.fields['introduction'].label = "自己紹介"
 
         # ユーザーの更新前情報をフォームに挿入
         self.fields['nickName'].widget.attrs['class'] = 'form-control col-12'
         self.fields['img'].widget.attrs['class'] = 'form-control col-12'
         self.fields['receive_newsletter'].widget.attrs['class'] = 'form-control col-12'
+        self.fields['introduction'].widget.attrs['class'] = 'd-flex form-control col-12'
         if nickName:
             self.fields['nickName'].widget.attrs['value'] = nickName
         if img:
             self.fields['img'].widget.attrs['value'] = img
         if receive_newsletter:
             self.fields['img'].widget.attrs['value'] = receive_newsletter
+        if introduction:
+            self.fields['introduction'].widget.attrs['value'] = introduction
     def update(self, profile):
         profile.nickName = self.cleaned_data['nickName']
         profile.img = self.cleaned_data['img']
         profile.receive_newsletter = self.cleaned_data['receive_newsletter']
+        profile.introduction = self.cleaned_data['introduction']
         profile.save()
 
 class DivinerTypeForm(forms.ModelForm):
