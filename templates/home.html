@@ -7,14 +7,22 @@
     <title>サンプルページ</title>
     <style>
       body {
-        color: #fff;
+        margin: 0;
         font-family: "Arial", sans-serif;
         display: flex;
         flex-direction: column;
         height: 100vh;
-        margin: 0;
         padding-bottom: 100px; /* footerの高さ分のpaddingを追加 */
       }
+      .container {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center; /* 水平方向中央揃え */
+          align-items: center; /* 垂直方向中央揃え */
+          min-height: 100vh; /* 画面の高さいっぱいに */
+          flex-direction: column; /* 要素を縦方向に配置 */
+        }
       .scrollable-container {
         max-height: 75%; /* この値は必要に応じて調整してください */
         overflow-y: auto;
@@ -46,7 +54,7 @@
         width: 100%;
       }
       html {
-        background-image: url("{% static 'image/占い師一覧背景.png' %}"); /* 背景画像のパス */
+        background-image: url("{% static 'image/トップ背景.png' %}"); /* 背景画像のパス */
         background-size: cover; /* 画像を画面全体にフィットさせる */
         background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
         background-attachment: fixed; /* 画像をスクロールに追随させない */
@@ -173,32 +181,88 @@
         border-radius: 8px;
         text-align: center;
       }
+      .icon-grid {
+            display: flex;
+            flex-wrap: wrap; /* 複数行に折り返す */
+            justify-content: space-around; /* 中央揃えと等間隔 */
+            max-width: 800px; /* 最大幅 */
+            align-items: center; /* 垂直方向中央揃え */
+        }
+
+        .icon {
+            flex: 0 0 calc(33.33% - 20px); /* 3列に分割 */
+            max-width: calc(33.33% - 20px); /* 3列に分割 */
+            text-align: center;
+            margin: 10px; /* アイコン間の間隔 */
+        }
+
+        .icon a {
+            display: block; /* リンクをブロック要素に変換 */
+        }
+
+        .icon img {
+            max-width: 100%; /* 画像の最大幅 */
+            height: auto; /* 高さは自動調整 */
+        }
+        h1 {
+          color: white;
+          margin-top: 120px;
+          text-align: left;
+          align-self: flex-start;
+        }
     </style>
   </head>
   <body>
-    <div class="div-container">
-      <div class="button-container-image">
-        <img src="{% static 'image/ケアカンとは？.png' %}" alt="ボタン画像" />
-      </div>
-      <div
-        class="button-container"
-        style="--background-url: url('{% static 'image/ホームフレーム.png' %}')"
-      >
-        <p class="button-container-text">{{about_carecan}}</p>
-      </div>
-      <div class="button-container-image">
-        <img
-          src="{% static 'image/ケアカンの特徴透過版.png' %}"
-          alt="ボタン画像"
-        />
-      </div>
-      <div
-        class="button-container"
-        style="--background-url: url('{% static 'image/ホームフレーム.png' %}')"
-      >
-        <p class="button-container-text">{{features_of_carecan}}</p>
+    <div class="container">
+      <h1>占術から探す</h1>
+      <div class="icon-grid">
+        <div class="icon">
+            <a href="{% url 'mydiviner' %}">
+              <img src="static/image/西洋占い.png" />
+            </a>
+        </div>
+        <div class="icon">
+            <a href="{% url 'mydiviner' %}">
+              <img src="static/image/西洋占星術.png" />
+            </a>
+        </div>
+        <div class="icon">
+            <a href="{% url 'mydiviner' %}">
+              <img src="static/image/東洋占い.png" />
+            </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/風水・九星気学占い.png" />
+          </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/姓名診断占い.png" />
+          </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/四柱推命占い.png" />
+          </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/セラピー・ヒーリング.png" />
+          </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/タロット占い.png" />
+          </a>
+        </div>
+        <div class="icon">
+          <a href="{% url 'mydiviner' %}">
+            <img src="static/image/霊感占い.png" />
+          </a>
+        </div>
       </div>
     </div>
-    {% include '_footer.html' %}
+      {% include '_footer.html' %}
   </body>
 </html>
